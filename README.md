@@ -8,4 +8,4 @@ pasajeros en los horarios disponibles
 
 3. f
 
-4. Se planea ocupar el formato json, para poder guardar nuestros archivos
+4. Los datos se guardarán en archivos locales con extensión .json, los que se cargarán al iniciar el sistema y se actualizarán cada vez que se realicen cambios, como por ejemplo, al agregar, cargar o guardar trenes.
