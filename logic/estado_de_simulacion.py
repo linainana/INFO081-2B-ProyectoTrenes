@@ -18,7 +18,9 @@ class EstadoSimulacion:
 
         self.estaciones = [
             Estacion("Estación Central", "RM", 8242459),
-            Estacion("Rancagua", "O’Higgins", 274407)
+            Estacion("Rancagua", "O’Higgins", 274407),
+            Estacion("Talca", "Maule", 242344),
+            Estacion("Chillan", "Ñuble", 204091)
         ]
 
         self.rutas = [
