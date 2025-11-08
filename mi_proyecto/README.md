@@ -10,8 +10,8 @@ pasajeros en los horarios disponibles
    Se actualiza a medida que las personas inician o finalizan sus recorridos entre estaciones.
    - Cantidad de trenes activos:  Muestra el número total de trenes actualmente en movimiento dentro de la simulación.  
    Se actualiza a medida que los trenes terminen sus recorridos o empiecen.
-De esta manera el operario conociendo estos datos, puede tomar decisiones de manera eficaz, como por ejemplo poner mas trenes
-si el flujo de personas es más alto. 
+     De esta manera el operario conociendo estos datos, puede tomar decisiones de manera eficaz, como por ejemplo poner mas trenes
+     si el flujo de personas es más alto. 
 
 4. Los datos se guardarán en archivos locales con extensión .json, los que se cargarán al iniciar el sistema y se actualizarán cada vez que se realicen cambios,
    como por ejemplo, al agregar, cargar o guardar trenes.
