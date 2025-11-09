@@ -19,10 +19,9 @@ class EstadoGuardado:
       if carpeta:
         os.makedirs(carpeta, exist_ok=True)
       with open(self.ruta_archivo, "w", encoding="utf-8") as archivo_json:
-        json.dump(estado, archivo_json, indent= 4, ensure_ascii=False
-      print(f"Estado guardado en {self.ruta_archivo}")
-     except Exception as e:
-        print(f"Error al guardar en {self.ruta_archivo}:{e}")
+        json.dump(estado, archivo_json, indent= 4, ensure_ascii=False)
+    except Exception as e:
+      print(f"Error al guardar en {self.ruta_archivo}:{e}")
   
   def cargar(self):
     """
