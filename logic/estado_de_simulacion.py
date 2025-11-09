@@ -1,6 +1,6 @@
-from models.tren import Tren
-from models.estacion import Estacion
-from models.ruta import Ruta
+from models.trenes import Tren
+from models.estaciones import Estacion
+from models.rutas import Ruta
 
 class EstadoSimulacion:
     def __init__(self):

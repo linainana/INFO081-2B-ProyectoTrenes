@@ -1,5 +1,5 @@
 import tkinter as tk
-import ui.ventana
+import mi_proyecto.ui.ventana as ui
 
 def main():
     try:
