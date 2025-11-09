@@ -23,3 +23,7 @@ si el flujo de personas es alto.
 #bash
 cd INFO081-XX-PROYECTOTRENES-3/mi_proyecto #para poder acceder a la carpeta que contiene main.py
 python main.py  #para correr el main.py
+
+#bash
+cd INFO081-XX-PROYECTOTRENES-3/mi_proyecto/ui #para poder llegar a ventana.py
+python ventana.py                             #para correr ventana.py
