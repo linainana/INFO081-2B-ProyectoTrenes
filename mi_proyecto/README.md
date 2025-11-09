@@ -21,5 +21,5 @@ si el flujo de personas es alto.
 
 5. Para poder acceder al archivo principal:
 #bash
-cd mi_proyecto  #para poder acceder a la carpeta que contiene main.py
+cd INFO081-XX-PROYECTOTRENES-3/mi_proyecto #para poder acceder a la carpeta que contiene main.py
 python main.py  #para correr el main.py
