@@ -52,7 +52,12 @@ class EstadoGuardado:
     Devuelve el estado inicial por defecto.
     """
     return {
-      "t
+      "tiempo": 0,
+      "trenes_activos": 0,
+      "pasajeros_totales": 0,
+      "eventos": [],
+      "en_ejecucion": False
+    }
     
 
 
