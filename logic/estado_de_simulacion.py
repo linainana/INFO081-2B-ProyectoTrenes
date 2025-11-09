@@ -13,7 +13,7 @@ class EstadoSimulacion:
     def estado_inicial_simulacion(self):
         self.trenes = [
             Tren("Tren BMU", 160, 236),
-            Tren("Tren EMU – EFE SUR", 120, 314)
+            Tren("Tren EMU – EFE SUR", 120, 236)
         ]
 
         self.estaciones = [
@@ -25,12 +25,25 @@ class EstadoSimulacion:
 
         self.rutas = [
             Ruta("Estación Central", "Rancagua", 87),
-            Ruta("Estación Central", "Chillan", 467),
+            Ruta("Rancagua", "Talca", 200),
+            Ruta("Talca", "Chillan", 180),
+            Ruta("Chillan", "Estacion Central", 467)
         ]
+        conexiones = {
+            "Estación Central": ["Rancagua", "Chillán"],
+            "Rancagua": ["Talca", "Estación Central"],
+            "Talca": ["Chillán", "Rancagua"],
+            "Chillán": ["Talca", "Estación Central"]
+        }
+
+        for estacion in self.estaciones:
+            if estacion.nombre in conexiones:
+                for destino in conexiones[estacion.nombre]:
+                    estacion.agregar_conexion(destino)
 
     def tiempo_avanzado(self, minutos):
-        print(f"Ha avanzando {minutos} minutos...")
+        print(f"Ha avanzando {minutos} minutos")
 
-    def registrao_de_evento(self, descripcion):
+    def registro_de_evento(self, descripcion):
         self.eventos.append(descripcion)
         print(f"Nuevo evento registrado: {descripcion}")
