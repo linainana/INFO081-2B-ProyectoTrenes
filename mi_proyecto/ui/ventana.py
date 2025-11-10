@@ -14,7 +14,7 @@ with open("config/ventana.json","r", encoding="utf-8") as archivo:
 # Crea la ventana principal
 def Ventana_principal(root):
     root.title("Inicial")
-    root.geometry(f"{ventana["ancho"]}x{ventana["altura"]}")
+    root.geometry(f"{ventana['ancho']}x{ventana['altura']}")
     root.config(bg=colores["fondo"])
     
     # Crear el contenedor de la pestaña
