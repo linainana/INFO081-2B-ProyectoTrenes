@@ -4,10 +4,11 @@ from tkinter import messagebox
 with open("config/colores.json", "r", encoding="utf-8") as archivo: colores = json.load(archivo)
 with open("config/ventana.json","r", encoding="utf-8") as archivo: ventana = json.load(aechivo)
 
+
 # Crea la ventana principal
 def Ventana_principal(root):
     root.title("Inicial")
-    root.geometry(ventana["altura"]xventana["ancho"])
+    root.geometry(f"{ventana["altura"]}x{ventana["ancho"]}")
     root.config(bg=colores["fondo"])
     
     # Crear el contenedor de la pestaña
@@ -24,7 +25,7 @@ def Ventana_principal(root):
         # Crear la ventana para igresar el ID
         ventana_ingreso = tk.Toplevel(root)
         ventana_ingreso.title(f"Ingreso ID")
-        ventana_ingreso.geometry(ventana["altura"]xventana["ancho"])
+        ventana_ingreso.geometry(f"{ventana["altura"]}x{ventana["ancho"]}")
         ventana_ingreso.config(bg=colores["fondo"])
     
         # Crear la pestaña
@@ -52,7 +53,7 @@ def Ventana_principal(root):
         # Crear una ventana
         ventana_ID = tk.Toplevel(root)
         ventana_ID.title(f"Pestaña de ID {user_id}")
-        ventana_ID.geometry(ventana["altura"]xventana["ancho"])
+        ventana_ID.geometry(f"{ventana["altura"]}x{ventana["ancho"]}")
         ventana_ID.config(bg=colores["fondo"])
     
         # Contenido de la pestaña
