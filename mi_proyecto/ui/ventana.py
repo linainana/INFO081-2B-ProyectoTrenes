@@ -4,7 +4,7 @@ from tkinter import messagebox
 import json
 import os
 
-base_dir = os.path.dirname(__file_)
+base_dir = os.path.dirname(__file__)
 
 config_path = os.path.join(base_dir, "..", "config", "colores.json")
 with open(config_path, "r", encoding="utf-8") as archivo: 
