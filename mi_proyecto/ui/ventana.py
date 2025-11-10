@@ -2,7 +2,7 @@ import tkinter as tk
 from tkinter import ttk
 from tkinter import messagebox
 import json
-import config
+
 
 with open("config/colores.json", "r", encoding="utf-8") as archivo: 
     colores = json.load(archivo)
