@@ -4,22 +4,19 @@ from tkinter import messagebox
 with open("config/colores.json", "r", encoding="utf-8") as archivo: colores = json.load(archivo)
 with open("config/ventana.json","r", encoding="utf-8") as archivo: ventana = json.load(aechivo)
 
-
-#print(colores["texto"])  # → "#880e4f"
-
 # Crea la ventana principal
 def Ventana_principal(root):
     root.title("Inicial")
-    root.geometry("400x250")
-    root.config(bg="#FFE0F9")
+    root.geometry(ventana["altura"] x ventana["ancho"])
+    root.config(bg=colores["fondo"])
     
     # Crear el contenedor de la pestaña
     notebook = ttk.Notebook(root)
     notebook.pack(expand=True, fill="both")
     
     # Crear la pestaña 
-    pestana_principal = tk.Frame(notebook, bg="#FFE0F9")
-    notebook.add(pestana_principal, text="Inicio")
+    pestana_principal = tk.Frame(notebook, bg=colores["fondo"])
+    notebook.add(pestana_principal, text=ventana["titulo"])
 
 
     #Función que abre la ventana para ingresar el ID
@@ -27,8 +24,8 @@ def Ventana_principal(root):
         # Crear la ventana para igresar el ID
         ventana_ingreso = tk.Toplevel(root)
         ventana_ingreso.title(f"Ingreso ID")
-        ventana_ingreso.geometry("400x250")
-        ventana_ingreso.config(bg="#FFE0F9")
+        ventana_ingreso.geometry(ventana["altura"] x ventana["ancho"])
+        ventana_ingreso.config(bg=colores["fondo"])
     
         # Crear la pestaña
         label_bienvenida = ttk.Label(ventana_ingreso, text=f"Bienvenido")
@@ -55,8 +52,8 @@ def Ventana_principal(root):
         # Crear una ventana
         ventana_ID = tk.Toplevel(root)
         ventana_ID.title(f"Pestaña de ID {user_id}")
-        ventana_ID.geometry("400x300")
-        ventana_ID.config(bg="#FFE0F9")
+        ventana_ID.geometry(ventana["altura"] x ventana["ancho"])
+        ventana_ID.config(bg=colores["fondo"])
     
         # Contenido de la pestaña
         label_bienvenida = ttk.Label(ventana_ID, text=f"Bienvenido, usuario con ID: {user_id}")
