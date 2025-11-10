@@ -2,12 +2,16 @@ import tkinter as tk
 from tkinter import ttk
 from tkinter import messagebox
 import json
-from mi_proyecto.config import colores, ventana
+import os
 
-with open("config/colores.json", "r", encoding="utf-8") as archivo: 
+base_dir = os.path.dirname(__file_)
+
+config_path = os.path.join(base_dir, "..", "config", "colores.json")
+with open(config_path, "r", encoding="utf-8") as archivo: 
     colores = json.load(archivo)
     
-with open("config/ventana.json","r", encoding="utf-8") as archivo: 
+ventana_path = os.path.join(base_dir, "..", "config", "ventana.json")
+with open(ventana_path,"r", encoding="utf-8") as archivo: 
     ventana = json.load(archivo)
 
 
