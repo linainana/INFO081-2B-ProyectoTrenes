@@ -3,10 +3,10 @@ from tkinter import ttk
 from tkinter import messagebox
 import json
 
-with open("configuración/colores.json", "r", encoding="utf-8") as archivo: 
+with open("config/colores.json", "r", encoding="utf-8") as archivo: 
     colores = json.load(archivo)
     
-with open("configuración/ventana.json","r", encoding="utf-8") as archivo: 
+with open("config/ventana.json","r", encoding="utf-8") as archivo: 
     ventana = json.load(archivo)
 
 
