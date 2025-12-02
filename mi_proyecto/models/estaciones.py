@@ -6,10 +6,12 @@ class Estacion:
         self.nombre = nombre
         self.region = region
         self.poblacion = poblacion
+        
         self.conexiones = []  
         self.vias = []
+        
         via_rotacion = Via(id_=f"{id_}_rotacion", es_rotacion=True)
-        self.vias
+        self.vias.append(via_rotacion)
 
     def agregar_via(self, via: Via):
         self.vias.append(via)
