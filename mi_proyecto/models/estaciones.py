@@ -1,9 +1,16 @@
 class Estacion:
-    def __init__(self, nombre, region, poblacion):
+    def __init__(self, id_, nombre, region, poblacion):
+        self.id = id_
         self.nombre = nombre
         self.region = region
         self.poblacion = poblacion
         self.conexiones = []  
+        self.vias = []
+        via_rotacion = Via(id_=f"{id_}_rotacion", es_rotacion=True)
+        self.vias
+
+    def agregar_via(self, via: Via):
+        self.vias.append(via)
 
     def agregar_conexion(self, estacion_destino):
         if estacion_destino not in self.conexiones:
