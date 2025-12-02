@@ -1,6 +1,7 @@
 from models.trenes import Tren
 from models.estaciones import Estacion
 from models.rutas import Ruta
+from models.via import Via
 
 class EstadoSimulacion:
     def __init__(self):
@@ -18,6 +19,20 @@ class EstadoSimulacion:
         e4 = Estacion(4, "Chillán", "Ñuble", 204091)
 
         self.estaciones = [e1, e2, e3, e4]
+
+
+        via1 = Via("V1", estacion=e1)
+        via2 = Via("V2", estacion=e2)
+        via3 = Via("V3", estacion=e3)
+        via4 = Via("V4", estacion=e4)
+
+        e1.agregar_via(via1)
+        e2.agregar_via(via2)
+        e3.agregar_via(via3)
+        e4.agregar_via(via4)
+
+        self.vias = [via1, via2, via3, via4]
+
         
         self.rutas = [
             Ruta("R1", [e1,e2], distancia_total=87),
