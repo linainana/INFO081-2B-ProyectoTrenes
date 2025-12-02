@@ -1,3 +1,5 @@
+from models.via import Via
+
 class Estacion:
     def __init__(self, id_, nombre, region, poblacion):
         self.id = id_
