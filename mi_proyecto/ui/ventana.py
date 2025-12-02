@@ -60,7 +60,7 @@ def Ventana_principal(root):
             messagebox.showwarning("Atención", "Debe ingresar un ID antes de continuar.")
             return
     
-            ventana_ID = tk.Toplevel(root)
+        ventana_ID = tk.Toplevel(root)
         ventana_ID.title(f"Pestaña de ID {user_id}")
         ventana_ID.geometry("400x300")
 
