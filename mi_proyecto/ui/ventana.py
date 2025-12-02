@@ -62,7 +62,8 @@ def Ventana_principal(root):
     
         ventana_ID = tk.Toplevel(root)
         ventana_ID.title(f"Pestaña de ID {user_id}")
-        ventana_ID.geometry("400x300")
+        ventana_ID.geometry(f"{ventana['ancho']}x{ventana['altura']}")
+        ventana_ID.config(bg=colores["fondo"])
 
         ttk.Label(ventana_ID, text=f"Bienvenido, usuario con ID: {user_id}").pack(pady=20)
     
@@ -78,7 +79,8 @@ def Ventana_principal(root):
     def ver_trenes():
         ver_tren = tk.Toplevel(root)
         ver_tren.title("TRENES")
-        ver_tren.geometry("400x300")
+        ver_tren.geometry(f"{ventana['ancho']}x{ventana['altura']}")
+        ver_tren.config(bg=colores["fondo"])
 
         ttk.Label(ver_tren, text="VER TRENES").pack(pady=20)
         ttk.Label(ver_tren, text="TRENES").pack(padx=50, pady=20)
@@ -86,7 +88,8 @@ def Ventana_principal(root):
         def crear_tren():
             crear_trenes = tk.Toplevel(root)
             crear_trenes.title("CREAR TREN")
-            crear_trenes.geometry("400x300")
+            crear_trenes.geometry(f"{ventana['ancho']}x{ventana['altura']}")
+            crear_trenes.config(bg=colores["fondo"])
 
             ttk.Label(crear_trenes, text="TEXTO").pack(pady=20)
     
@@ -96,7 +99,8 @@ def Ventana_principal(root):
         def editar_tren():
             editar_trenes = tk.Toplevel(root)
             editar_trenes.title("EDITAR TREN")
-            editar_trenes.geometry("400x300")
+            editar_trenes.geometry(f"{ventana['ancho']}x{ventana['altura']}")
+            editar_trenes.config(bg=colores["fondo"])
 
             ttk.Label(editar_trenes, text="TEXTO").pack(pady=20)
     
@@ -106,7 +110,8 @@ def Ventana_principal(root):
         def eliminar_tren():
             eliminar_trenes = tk.Toplevel(root)
             eliminar_trenes.title("ELIMINAR TREN")
-            eliminar_trenes.geometry("400x300")
+            eliminar_trenes.geometry(f"{ventana['ancho']}x{ventana['altura']}")
+            eliminar_trenes.config(bg=colores["fondo"])
 
             ttk.Label(eliminar_trenes, text="TEXTO").pack(pady=20)
     
@@ -116,7 +121,8 @@ def Ventana_principal(root):
         def ver_estado():
             v_estado = tk.Toplevel(root)
             v_estado.title("ESTADO DE TRENES")
-            v_estado.geometry("400x300")
+            v_estado.geometry(f"{ventana['ancho']}x{ventana['altura']}")
+            v_estado.config(bg=colores["fondo"])
 
             ttk.Label(v_estado, text="TEXTO").pack(pady=20)
     
@@ -138,7 +144,8 @@ def Ventana_principal(root):
     def ver_estaciones():
         ver_estacion = tk.Toplevel(root)
         ver_estacion.title("ESTACIONES")
-        ver_estacion.geometry("400x300")
+        ver_estacion.geometry(f"{ventana['ancho']}x{ventana['altura']}")
+        ver_estacion.config(bg=colores["fondo"])
 
         ttk.Label(ver_estacion, text="VER ESTACIONES").pack(pady=20)
         ttk.Label(ver_estacion, text="ESTACIONES").pack(padx=50, pady=20)
@@ -146,7 +153,8 @@ def Ventana_principal(root):
         def crear_estaciones():
             crear_estacion = tk.Toplevel(root)
             crear_estacion.title("CREAR ESTACIÓN")
-            crear_estacion.geometry("400x300")
+            crear_estacion.geometry(f"{ventana['ancho']}x{ventana['altura']}")
+            crear_estacion.config(bg=colores["fondo"])
 
             ttk.Label(crear_estacion, text="TEXTO").pack(pady=20)
     
@@ -156,7 +164,8 @@ def Ventana_principal(root):
         def editar_estaciones():
             editar_estacion = tk.Toplevel(root)
             editar_estacion.title("EDITAR ESTACIÓN")
-            editar_estacion.geometry("400x300")
+            editar_estacion.geometry(f"{ventana['ancho']}x{ventana['altura']}")
+            editar_estacion.config(bg=colores["fondo"])
 
             ttk.Label(editar_estacion, text="TEXTO").pack(pady=20)
     
@@ -166,7 +175,8 @@ def Ventana_principal(root):
         def eliminar_estaciones():
             eliminar_estacion = tk.Toplevel(root)
             eliminar_estacion.title("ELIMINAR ESTACIÓN")
-            eliminar_estacion.geometry("400x300")
+            eliminar_estacion.geometry(f"{ventana['ancho']}x{ventana['altura']}")
+            eliminar_estacion.config(bg=colores["fondo"])
 
             ttk.Label(eliminar_estacion, text="TEXTO").pack(pady=20)
     
@@ -176,7 +186,8 @@ def Ventana_principal(root):
         def ver_estado():
             v_estado = tk.Toplevel(root)
             v_estado.title("ESTADO DE ESTACIÓN")
-            v_estado.geometry("400x300")
+            v_estado.geometry(f"{ventana['ancho']}x{ventana['altura']}")
+            v_estado.config(bg=colores["fondo"])
 
             ttk.Label(v_estado, text="TEXTO").pack(pady=20)
     
@@ -198,7 +209,8 @@ def Ventana_principal(root):
     def ver_rutas():
         ver_ruta = tk.Toplevel(root)
         ver_ruta.title("RUTAS")
-        ver_ruta.geometry("400x300")
+        ver_ruta.geometry(f"{ventana['ancho']}x{ventana['altura']}")
+        ver_ruta.config(bg=colores["fondo"])
 
         ttk.Label(ver_ruta, text="VER RUTAS").pack(pady=20)
         ttk.Label(ver_ruta, text="TRENES").pack(padx=50, pady=20)
@@ -206,7 +218,8 @@ def Ventana_principal(root):
         def crear_rutas():
             crear_ruta = tk.Toplevel(root)
             crear_ruta.title("CREAR RUTA")
-            crear_ruta.geometry("400x300")
+            crear_ruta.geometry(f"{ventana['ancho']}x{ventana['altura']}")
+            crear_ruta.config(bg=colores["fondo"])
 
             ttk.Label(crear_ruta, text="TEXTO").pack(pady=20)
     
@@ -216,7 +229,8 @@ def Ventana_principal(root):
         def editar_rutas():
             editar_ruta = tk.Toplevel(root)
             editar_ruta.title("EDITAR RUTA")
-            editar_ruta.geometry("400x300")
+            editar_ruta.geometry(f"{ventana['ancho']}x{ventana['altura']}")
+            editar_ruta.config(bg=colores["fondo"])
 
             ttk.Label(editar_ruta, text="TEXTO").pack(pady=20)
     
@@ -226,7 +240,8 @@ def Ventana_principal(root):
         def eliminar_rutas():
             eliminar_ruta = tk.Toplevel(root)
             eliminar_ruta.title("ELIMINAR RUTA")
-            eliminar_ruta.geometry("400x300")
+            eliminar_ruta.geometry(f"{ventana['ancho']}x{ventana['altura']}")
+            eliminar_ruta.config(bg=colores["fondo"])
 
             ttk.Label(eliminar_ruta, text="TEXTO").pack(pady=20)
     
@@ -236,7 +251,8 @@ def Ventana_principal(root):
         def ver_estado():
             v_estado = tk.Toplevel(root)
             v_estado.title("ESTADO DE RUTA")
-            v_estado.geometry("400x300")
+            v_estado.geometry(f"{ventana['ancho']}x{ventana['altura']}")
+            v_estado.config(bg=colores["fondo"])
 
             ttk.Label(v_estado, text="TEXTO").pack(pady=20)
     
