@@ -1,11 +1,11 @@
 # ventana_principal.py
 import tkinter as tk
-from tkinter import ttk, messagebox
+from tkinter import ttk
 
 from .ventanas_trenes import ver_trenes
 from .ventana_rutas import ver_rutas
 from .ventana_estaciones import ver_estaciones
-from .ventana_id import ventana_ingreso_id
+from .ventana_id import Ingreso_ID
 
 def Ventana_principal(root, ventana, colores):
     root.title("Inicial")
@@ -18,8 +18,9 @@ def Ventana_principal(root, ventana, colores):
     pestana_principal = tk.Frame(notebook, bg=colores["fondo"])
     notebook.add(pestana_principal, text=ventana["titulo"])
 
-    ttk.Button(
+    boton_registro = ttk.Button(
         pestana_principal,
         text="Ingresar",
-        command=lambda: ventana_ingreso_id(root, ventana, colores)
-    ).pack(pady=100)
+        command=lambda: Ingreso_ID(root, ventana, colores)
+    )
+    boton_registro.pack(pady=100)
