@@ -25,7 +25,7 @@ class LíneaTiempo:
         estado_guardado = self.snapshots[event_index]
 
         # Importamos aquí para evitar importaciones circulares
-        from logic.estado_simulacion import EstadoSimulacion
+        from logic.estado_de_simulacion import EstadoSimulacion
 
         # Usamos from_dict() para reconstruir la simulación
         nuevo_estado = EstadoSimulacion.from_dict(estado_guardado)
