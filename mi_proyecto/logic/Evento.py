@@ -15,13 +15,13 @@ class Evento:
         }
     
     @staticmethod
-    def desde_dicionario(data: dict):
+    def desde_diccionario(data: dict):
         instante = datetime.fromisoformat(data["instante"])
         evento = Evento(instante, data["tipo"], data["datos"])
         evento.id = data.get("id", None)
         return evento
 
-    def __representacion__(self):
+    def __repr__(self):
         return (
             f"Evento(id={self.id}, "
             f"instante='{self.instante}', "
