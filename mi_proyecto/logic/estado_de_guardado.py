@@ -10,22 +10,23 @@ class EstadoGuardado:
     self.ruta_archivo = ruta_archivo
 
 
-  def guardar(self, estado):
+  def guardar(self, estado_simulacion):
     """
     Guarda el diccionario 'estado' en un archivo JSON.
     """
 
     try:
-      carpeta=os.path.dirname(self.ruta_archivo)
+      estado_dict = estado_simulacion.to_dict()
+      carpeta = os.path.dirname(self.ruta_archivo)
       if carpeta:
         os.makedirs(carpeta, exist_ok=True)
       with open(self.ruta_archivo, "w", encoding="utf-8") as archivo_json:
-        json.dump(estado, archivo_json, indent= 4, ensure_ascii=False)
+        json.dump(estado_dict, archivo_json, indent=4, ensure_ascii=False)
     except Exception as e:
-      print(f"Error al guardar en {self.ruta_archivo}:{e}")
+      print(f"Error al guardar en {self.ruta_archivo}: {e}")
 
   
-  def cargar(self):
+  def cargar(self, clase_estado_simulacion):
     """
     Carga y devuelve el diccionario con el estado desde el archivo JSON.
     Si no existe o está corrupto, devuelve un estado por defecto automaticamente.
@@ -33,33 +34,17 @@ class EstadoGuardado:
 
     if not os.path.exists(self.ruta_archivo):
       print(f"No existe {self.ruta_archivo} - se utilizara estado por defecto.")
-      return self.estado_por_defecto()
+      return clase_estado_simulacion()
 
     try:
       with open(self.ruta_archivo, "r", encoding="utf-8") as archivo_json:
-        estado = json.load(archivo_json)
+        data = json.load(archivo_json)
       print(f"Estado cargado desde {self.ruta_archivo}")
+      estado = clase_estado_simulacion.from_dict(data)
       return estado
     except json.JSONDecodeError:
       print(f"Error al cargar {self.ruta_archivo} - se utilizara estado por defecto.")
-      return self.estado_por_defecto()
+      return clase_estado_simulacion()
     except Exception as e:
       print (f"Error al cargar {self.ruta_archivo}: {e}")
-      return self.estado_por_defecto()
-
-
-  def estado_por_defecto(self):
-    """
-    Devuelve el estado inicial por defecto.
-    """
-    return {
-      "tiempo": 0,
-      "trenes_activos": 0,
-      "pasajeros_totales": 0,
-      "eventos": [],
-      "en_ejecucion": False
-    }
-    
-
-
-
+      return clase_estado_simulacion()
