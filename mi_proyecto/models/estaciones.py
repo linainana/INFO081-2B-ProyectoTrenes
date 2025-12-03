@@ -10,10 +10,7 @@ class Estacion:
         self.conexiones = []  
         self.vias = []
         
-        via_rotacion = Via(id_=f"{id_}_rotacion", es_rotacion=True)
-        self.vias.append(via_rotacion)
-
-    def agregar_via(self, via: Via):
+    def agregar_via(self):
         self.vias.append(via)
 
     def agregar_conexion(self, estacion_destino):
