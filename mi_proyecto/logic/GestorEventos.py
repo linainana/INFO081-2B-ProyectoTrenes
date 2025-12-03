@@ -31,7 +31,7 @@ class GestorEventos:
     def listar_eventos(self):   #eventos ordenados cronológicamente
         return sorted(self.todos_los_eventos, key=lambda e: e.instante)
 
-    def reemplazar_eventos_futuros(self, id_evento_corte: int, nuevos_eventos: List[Event]):
+    def reemplazar_eventos_futuros(self, id_evento_corte: int, nuevos_eventos: List[Evento]):
         eventos_confirmados = [
             e for e in self.todos_los_eventos
             if e.id and e.id <= id_evento_corte
