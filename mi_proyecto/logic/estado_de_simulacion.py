@@ -91,8 +91,7 @@ class EstadoSimulacion:
     def _procesar_movimiento_tren(self, evento):
         tren = evento.datos["tren"]
         estacion_anterior = tren.posicion
-        
-        # Mover el tren
+
         estacion_nueva = tren.avanzar()
 
         if estacion_nueva:

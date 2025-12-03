@@ -61,7 +61,6 @@ def iniciar_simulacion_en_frame(frame_padre):
                 angulo_rad = math.radians(i * angulo_paso)
                 x = centro_x + radio * math.cos(angulo_rad)
                 y = centro_y + radio * math.sin(angulo_rad)
-                # Guardamos usando el NOMBRE como clave
                 coords_estaciones[est.nombre] = (x, y)
 
             for ruta in simulacion.rutas:
@@ -75,11 +74,9 @@ def iniciar_simulacion_en_frame(frame_padre):
                         if est_a.nombre in coords_estaciones and est_b.nombre in coords_estaciones:
                             x1, y1 = coords_estaciones[est_a.nombre]
                             x2, y2 = coords_estaciones[est_b.nombre]
-                            
-                            # Línea gris de conexión
+ 
                             canvas_mapa.create_line(x1, y1, x2, y2, fill="#bdc3c7", width=4)
 
-            # C) DIBUJAR ESTACIONES (Círculos azules)
             for est in estaciones:
                 if est.nombre in coords_estaciones:
                     x, y = coords_estaciones[est.nombre]
@@ -87,59 +84,44 @@ def iniciar_simulacion_en_frame(frame_padre):
                     canvas_mapa.create_oval(x-r, y-r, x+r, y+r, fill="#3498db", outline="white", width=2)
                     canvas_mapa.create_text(x, y-30, text=est.nombre, font=("Arial", 9, "bold"), fill="#2c3e50")
 
-            # D) DIBUJAR TRENES
-            # Tu clase Tren tiene: self.posicion = Objeto Estacion
             for tren in simulacion.trenes:
                 if tren.posicion and tren.posicion.nombre in coords_estaciones:
                     tx, ty = coords_estaciones[tren.posicion.nombre]
-                    
-                    # Dibujar cuadrado naranja
+   
                     tr = 12
                     canvas_mapa.create_rectangle(tx-tr, ty-tr, tx+tr, ty+tr, fill="#f39c12", outline="black")
                     canvas_mapa.create_text(tx, ty-18, text=tren.nombre[:6], font=("Arial", 8), fill="black")
-
-        # ==========================================
-        # 4. ACTUALIZACIÓN PANTALLA
-        # ==========================================
         def refrescar_pantalla():
-            # Reloj
+
             try: hora = simulacion.hora_actual.strftime("%H:%M")
             except: hora = str(simulacion.hora_actual)
             lbl_reloj.config(text=hora)
-            
-            # Lista de Eventos (Tu lógica usa eventos_confirmados)
+  
             lista_box.delete(0, tk.END)
-            # Mostramos los últimos 15 eventos
             ultimos = simulacion.eventos_confirmados[-15:]
             for evt in ultimos:
                 try: h = evt.instante.strftime("%H:%M")
                 except: h = "??"
-                
-                # Descripción segura
+
                 desc = f"{evt.tipo}"
                 if isinstance(evt.datos, dict) and "tren" in evt.datos:
                      desc += f" | {evt.datos['tren'].nombre}"
                 
                 lista_box.insert(tk.END, f"[{h}] {desc}")
             
-            # Mapa
             dibujar_mapa()
 
         def btn_avanzar_click():
-            # Llamamos a tu lógica avanzar_siguiente_evento
             evento = simulacion.avanzar_siguiente_evento()
             if evento:
                 refrescar_pantalla()
             else:
                 messagebox.showinfo("Fin", "No hay más eventos pendientes.")
 
-        # Botón Avanzar
         btn = tk.Button(frame_btn, text=">> AVANZAR EVENTO >>", 
                         bg="green", fg="white", font=("Arial", 11, "bold"),
                         command=btn_avanzar_click)
         btn.pack(side="left", padx=10, fill="x", expand=True)
-
-        # Iniciar todo visualmente
         refrescar_pantalla()
 
     except Exception as e:
