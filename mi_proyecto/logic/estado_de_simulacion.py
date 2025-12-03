@@ -1,13 +1,13 @@
 from datetime import datetime, timedelta
 from logic.evento import Evento
 from logic.gestor_eventos import GestorEventos
-
 from models.trenes import Tren
 from models.estaciones import Estacion
 from models.rutas import Ruta
 from models.via import Via
 
 class EstadoSimulacion:
+     
     def __init__(self):
         self.hora_actual = datetime(2015, 3, 1, 7, 0)
         self.trenes = []
@@ -16,6 +16,8 @@ class EstadoSimulacion:
         self.vias = []
         self.gestor_eventos = GestorEventos()
         self.eventos_confirmados = []
+        ##### Sistema de líneas temporales
+        #####self.timeline = TimeLine(self)
 
     def estado_inicial_simulacion(self):
         e1 = Estacion(1, "Estación Central", "RM", 8242459)
@@ -64,11 +66,8 @@ class EstadoSimulacion:
                 for destino in conexiones[estacion.nombre]:
                     estacion.agregar_conexion(destino)
 
-    def avanzar_tiempo(self, minutos=1):
-        self.hora_actual += timedelta(minutes=minutos)
-
     def programar_evento(self, instante, tipo, datos):
-        evento = Evento(instante, tipo, datos)
+        evento = self.gestor_eventos.crear_evento(instante, tipo, datos)
         self.gestor_eventos.agregar_evento(evento)
 
     def avanzar_siguiente_evento(self):
@@ -78,13 +77,14 @@ class EstadoSimulacion:
             print("No hay más eventos")
             return None
 
-        #Actualizar hora
+        # Avanzar tiempo a la hora del evento
         self.hora_actual = evento.instante
-
-        #Guardarlo en historial
+        # Guardarlo en historial
         self.eventos_confirmados.append(evento)
-
-        #Despachar según tipo
+        # Guardar snapshot
+        event_index = len(self.eventos_confirmados) - 1
+        self.timeline.save_snapshot(self, event_index)
+        # Procesar evento según tipo
         if evento.tipo == "movimiento_tren":
             self._procesar_movimiento_tren(evento)
 
@@ -92,7 +92,6 @@ class EstadoSimulacion:
 
     def _procesar_movimiento_tren(self, evento):
         tren = evento.datos["tren"]
-        
         estacion_anterior = tren.posicion
         estacion_nueva = tren.avanzar()
 
@@ -101,18 +100,33 @@ class EstadoSimulacion:
         else:
             print(f"{tren.nombre} llegó al final de su ruta")
 
-    def retroceder_hasta_evento(self, id_evento):
-        self.gestor_eventos.reemplazar_eventos_futuros(id_evento, nuevos_eventos=[])
+    def crear_linea_temporal(self, id_evento):
+        """
+        Crea una nueva simulación exactamente como estaba en el
+        evento con ID = id_evento.
+        """
+        return self.timeline.create_new_timeline(id_evento)
 
-        #Ajustar hora
-        for e in self.eventos_confirmados:
-            if e.id == id_evento:
-                self.hora_actual = e.instante
-                break
+    def to_dict(self):
+        return {
+            "hora_actual": self.hora_actual.isoformat(),
+            "eventos_confirmados": [e.convertir_a_diccionario() for e in self.eventos_confirmado],
+            "eventos_futuros": [ev.convertir_a_diccionario() for ev in self.gestor_eventos.todos_los_eventos],
+            # Si quieres agregar trenes/estaciones también puedo hacerlo
+        }
+    @staticmethod
+    def from_dict(data):
+        estado = EstadoSimulacion()
+        # Hora
+        estado.hora_actual = datetime.fromisoformat(data["hora_actual"])
+         # Restaurar eventos futuros
+        for ev_data in data["eventos_futuros"]:
+            ev = Evento.desde_diccionario(ev_data)
+            estado.gestor_eventos.agregar_evento(ev)
+         # Restaurar confirmados
+        for ev_data in data["eventos_confirmados"]:
+            ev = Evento.desde_diccionario(ev_data)
+            estado.eventos_confirmados.append(ev)
 
-        #Recortar historial
-        self.eventos_confirmados = [
-            e for e in self.eventos_confirmados if e.id <= id_evento
-        ]
-
+        return estado
 
