@@ -39,13 +39,7 @@ class Tren:
         if idx + 1 < len(estaciones):
             self.posicion = estaciones[idx + 1]
             return self.posicion
-        return None
 
-        siguiente = self.ruta.obtener_siguiente(self.posicion)
-        if siguiente:
-            self.posicion = siguiente
-            return siguiente
-        else:
-            print(f"El tren {self.nombre} ya llegó al final de la ruta.")
-            return None
+        print(f"El tren {self.nombre} ya llegó al final de la ruta.")
+        return None
     
