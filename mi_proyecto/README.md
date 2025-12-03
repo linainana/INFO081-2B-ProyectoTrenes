@@ -27,3 +27,7 @@ python main.py  #para correr el main.py
 #bash
 cd INFO081-XX-PROYECTOTRENES-3/mi_proyecto/ui #para poder llegar a ventana.py
 python ventana.py                             #para correr ventana.py
+
+Documentacion:
+- Elegimos para la creacion de trenes los parametros de nombre (para poder editarlo o eliminarlo), velocidad, num. de vagones, y capacidad de estos. Para la creacion de rutas un punto de partida y llegada y la longitud de la ruta. Y para las estaciones, nombre, región, población y si va a norte o sur. 
+Cada vez que se crea alguna de las entidades quedan guardadas en un archivo .json, para poder verificar los datos.
