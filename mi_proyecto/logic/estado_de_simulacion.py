@@ -18,7 +18,7 @@ class EstadoSimulacion:
         self.vias = []
         self.gestor_eventos = GestorEventos()
         self.eventos_confirmados = []
-        self.timeline = TimeLine(self)
+        self.línea_tiempo = LíneaTiempo(self)
 
     def estado_inicial_simulacion(self):
         e1 = Estacion(1, "Estación Central", "RM", 8242459)
