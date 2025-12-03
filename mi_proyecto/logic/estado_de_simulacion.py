@@ -9,13 +9,14 @@ class EstadoSimulacion:
         self.trenes = []
         self.estaciones = []
         self.rutas = []
+        self.vias = []
         self.eventos = []
 
     def estado_inicial_simulacion(self):
        
-        e1 = Estacion(1, "Estación Central", "RM", 8242459),
-        e2 = Estacion(2, "Rancagua", "O’Higgins", 274407),
-        e3 = Estacion(3, "Talca", "Maule", 242344),
+        e1 = Estacion(1, "Estación Central", "RM", 8242459)
+        e2 = Estacion(2, "Rancagua", "O’Higgins", 274407)
+        e3 = Estacion(3, "Talca", "Maule", 242344)
         e4 = Estacion(4, "Chillán", "Ñuble", 204091)
 
         self.estaciones = [e1, e2, e3, e4]
@@ -47,6 +48,11 @@ class EstadoSimulacion:
             Tren("T001", "Tren BMU", 160, 236, ruta=self.rutas[0]),
             Tren("T002", "Tren EMU – EFE SUR", 120, 236, ruta=self.rutas[1])
         ]
+
+        for tren in self.trenes:
+            estacion_inicial = tren.posicion
+            via = estacion_inicial.vias[0]
+            via.tren_ingresa(tren)
 
        
         conexiones = {
