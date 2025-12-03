@@ -46,7 +46,7 @@ class EstadoSimulacion:
             Tren("T002", "Tren EMU – EFE SUR", 120, 236, ruta=self.rutas[1])
         ]
          
-         for tren in self.trenes:
+        for tren in self.trenes:
             estacion_inicial = tren.posicion
             if estacion_inicial and estacion_inicial.vias:
                 via = estacion_inicial.vias[0]
@@ -65,10 +65,10 @@ class EstadoSimulacion:
                     estacion.agregar_conexion(destino)
 
     def programar_evento(self, instante, tipo, datos):
-         """Correcto: crear evento directamente sin método inexistente."""
+        """Correcto: crear evento directamente sin método inexistente."""
         evento = Evento(instante, tipo, datos)
         self.gestor_eventos.agregar_evento(evento)
-          return evento
+        return evento
 
     def avanzar_siguiente_evento(self):
         evento = self.gestor_eventos.obtener_siguiente_evento()
@@ -82,7 +82,6 @@ class EstadoSimulacion:
          
         if evento.tipo == "movimiento_tren":
             self._procesar_movimiento_tren(evento)
-
         return evento
 
     def _procesar_movimiento_tren(self, evento):
@@ -119,6 +118,5 @@ class EstadoSimulacion:
         for ev_data in data["eventos_confirmados"]:
             ev = Evento.desde_diccionario(ev_data)
             estado.eventos_confirmados.append(ev)
-
         return estado
 
