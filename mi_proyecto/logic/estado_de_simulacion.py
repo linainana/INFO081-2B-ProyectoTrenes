@@ -48,7 +48,7 @@ class EstadoSimulacion:
         ]
          
         for tren in self.trenes:
-            estacion_inicial = tren.posicion # Esto es un objeto Estacion
+            estacion_inicial = tren.posicion
             if estacion_inicial and estacion_inicial.vias:
                 via = estacion_inicial.vias[0]
                 via.tren_ingresa(tren)
@@ -66,7 +66,6 @@ class EstadoSimulacion:
         for estacion in self.estaciones:
             if estacion.nombre in conexiones:
                 for destino_nom in conexiones[estacion.nombre]:
-                    # Buscamos el objeto destino en la lista self.estaciones
                     dest_obj = next((e for e in self.estaciones if e.nombre == destino_nom), None)
                     if dest_obj:
                         estacion.agregar_conexion(dest_obj)
@@ -80,7 +79,7 @@ class EstadoSimulacion:
         evento = self.gestor_eventos.obtener_siguiente_evento()
 
         if evento is None:
-            return None # Señal para la GUI de que terminó
+            return None 
 
         self.hora_actual = evento.instante
         self.eventos_confirmados.append(evento)
@@ -97,7 +96,7 @@ class EstadoSimulacion:
         estacion_nueva = tren.avanzar()
 
         if estacion_nueva:
-            tiempo_viaje = 30 # Minutos simulados
+            tiempo_viaje = 30 
             proximo_instante = self.hora_actual + timedelta(minutes=tiempo_viaje)
             self.programar_evento(proximo_instante, "movimiento_tren", {"tren": tren})
             
