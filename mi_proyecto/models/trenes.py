@@ -47,7 +47,7 @@ class Tren:
         estacion_nueva = estaciones[idx+ 1]
         
         if self.via_actual:
-            self.via_actual.trenes_sale(self)
+            self.via_actual.tren_sale(self)
             self.via_actual = None
         
         self.posicion = estacion_nueva
