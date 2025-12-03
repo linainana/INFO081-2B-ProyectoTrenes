@@ -1,7 +1,7 @@
 from datetime import datetime, timedelta
 from logic.evento import Evento
 from logic.gestor_eventos import GestorEventos
-from logic.Líneatemporal import lineatemporal
+from logic.Líneatemporal import LíneaTiempo
 from models.trenes import Tren
 from models.estaciones import Estacion
 from models.rutas import Ruta
