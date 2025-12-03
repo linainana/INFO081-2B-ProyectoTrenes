@@ -51,4 +51,8 @@ def abrir_ID(entry_id, root, ventana, colores):
     frame_simulacion = tk.Frame(nuevo_notebook)
     nuevo_notebook.add(frame_simulacion, text="Simulación EFE")
 
-    nuevo_notebook.select(0)
+    iniciar_simulacion_en_frame(frame_simulacion)
+
+    ventana_ID.update_idletasks()
+    ventana_ID.update()
+    nuevo_notebook.select(frame_simulacion)
