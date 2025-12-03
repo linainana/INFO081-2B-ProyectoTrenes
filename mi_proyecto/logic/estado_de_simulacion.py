@@ -1,6 +1,6 @@
 from datetime import datetime, timedelta
-from logic.evento import Evento 
-from logic.gestor_eventos import GestorEventos
+from logic.Evento import Evento 
+from logic.GestorEventos import GestorEventos
 from models.trenes import Tren
 from models.estaciones import Estacion
 from models.rutas import Ruta
@@ -24,7 +24,7 @@ class EstadoSimulacion:
         e4 = Estacion(4, "Chillán", "Ñuble", 204091)
 
         self.estaciones = [e1, e2, e3, e4]
-     
+
         e1.agregar_via(capacidad=1)
         e2.agregar_via(capacidad=1)
         e3.agregar_via(capacidad=1)
@@ -40,14 +40,14 @@ class EstadoSimulacion:
             Ruta("R5", [e3,e2], distancia_total=200),
             Ruta("R6", [e2,e1], distancia_total=87)
         ]
-        
+
         self.trenes = [
             Tren("T001", "Tren BMU", 160, 236, ruta=self.rutas[0]),
             Tren("T002", "Tren EMU – EFE SUR", 120, 236, ruta=self.rutas[1])
         ]
-         
+ 
         for tren in self.trenes:
-            estacion_inicial = tren.posicion
+            estacion_inicial = tren.posicion 
             if estacion_inicial and estacion_inicial.vias:
                 via = estacion_inicial.vias[0]
                 via.tren_ingresa(tren)
@@ -92,6 +92,7 @@ class EstadoSimulacion:
         tren = evento.datos["tren"]
         estacion_anterior = tren.posicion
         
+        # Mover el tren
         estacion_nueva = tren.avanzar()
 
         if estacion_nueva:
@@ -108,4 +109,3 @@ class EstadoSimulacion:
     
     def to_dict(self):
         return {"hora": self.hora_actual.isoformat()}
-

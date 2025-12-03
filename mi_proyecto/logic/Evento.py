@@ -2,14 +2,14 @@ from datetime import datetime
 
 class Evento:
     def __init__(self, instante: datetime, tipo: str, datos: dict, id_evento=None):
-        self.id_evento = id_evento 
+        self.id = id_evento 
         self.instante = instante   
         self.tipo = tipo          
         self.datos = datos               
 
     def convertir_a_diccionario(self):
         return {
-            "id_evento": self.id_evento,
+            "id": self.id,
             "instante": self.instante.isoformat(),
             "tipo": self.tipo,
             "datos": self.datos
@@ -18,17 +18,12 @@ class Evento:
     @staticmethod
     def desde_diccionario(data: dict):
         instante = datetime.fromisoformat(data["instante"])
-        evento = Evento(
-            instante, 
-            data["tipo"], 
-            data["datos"], 
-            id_evento=data.get("id_evento", None)
-        )
+        evento = Evento(instante, data["tipo"], data["datos"], id_evento=data.get("id", None))
         return evento
 
     def __repr__(self):
         return (
-            f"Evento(id_evento={self.id_evento}, "
+            f"Evento(id={self.id}, "
             f"instante='{self.instante}', "
             f"tipo='{self.tipo}', "
             f"datos={self.datos})"

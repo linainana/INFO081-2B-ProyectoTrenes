@@ -1,7 +1,7 @@
 import heapq
 from typing import List
 from datetime import datetime
-from logic.evento import Evento
+from logic.Evento import Evento
 
 class GestorEventos:
 
@@ -44,4 +44,3 @@ class GestorEventos:
         self._heap = []
         for e in self.listar_eventos():
             heapq.heappush(self._heap, (e.instante, e.id_evento, e))
-

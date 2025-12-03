@@ -5,172 +5,143 @@ import os
 import math
 
 def iniciar_simulacion_en_frame(frame_padre):
-    
-    ruta_actual = os.path.dirname(os.path.abspath(__file__))
-    ruta_raiz = os.path.dirname(ruta_actual)
-    if ruta_raiz not in sys.path:
-        sys.path.append(ruta_raiz)
+
+    base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    if base_dir not in sys.path:
+        sys.path.append(base_dir)
 
     try:
         from logic.estado_de_simulacion import EstadoSimulacion
+ 
         simulacion = EstadoSimulacion()
-
-        def cargar_datos_frescos():
-            simulacion.estado_inicial_simulacion()
-            if simulacion.trenes and simulacion.rutas:
-                simulacion.cola_eventos = []
-                r = simulacion.rutas[0]
-                t = simulacion.trenes[0]
-                simulacion.planificar_viaje(t, r.origen, r.destino, simulacion.hora_actual)
-        cargar_datos_frescos()
+        simulacion.estado_inicial_simulacion()
 
         panel_principal = tk.PanedWindow(frame_padre, orient=tk.HORIZONTAL)
         panel_principal.pack(fill="both", expand=True)
+
         frame_izq = tk.Frame(panel_principal, width=320)
         panel_principal.add(frame_izq)
+
         frame_stats = tk.Frame(frame_izq, bg="#f0f0f0", bd=2, relief="groove")
         frame_stats.pack(fill="x", padx=5, pady=5)
-        reloj = tk.Label(frame_stats, text="07:00", font=("Arial", 16, "bold"), bg="#f0f0f0", fg="#333")
-        reloj.pack(pady=5)
-        info = tk.Label(frame_stats, text="Cargando...", bg="#f0f0f0", font=("Arial", 9))
-        info.pack(pady=5)
+        
+        lbl_reloj = tk.Label(frame_stats, text="07:00", font=("Arial", 16, "bold"), bg="#f0f0f0", fg="#333")
+        lbl_reloj.pack(pady=5)
 
-        def btn_recargar_click():
-            cargar_datos_frescos()    
-            refrescar_pantalla()       
-            messagebox.showinfo("Actualizado", "Datos recargados desde archivos JSON.")
-
-        btn_refresh = tk.Button(frame_stats, text="Recargar Datos Nuevos", command=btn_recargar_click, bg="orange", fg="black")
-        btn_refresh.pack(fill="x", padx=10, pady=5)
-
-        tk.Label(frame_izq, text="Cola de Eventos:", font=("Arial", 10, "bold")).pack(anchor="w", padx=5)
+        tk.Label(frame_izq, text="Historial de Eventos:", font=("Arial", 10, "bold")).pack(anchor="w", padx=5)
         lista_box = tk.Listbox(frame_izq, height=15, font=("Consolas", 9))
         lista_box.pack(fill="both", expand=True, padx=5, pady=5)
-
+ 
         frame_btn = tk.Frame(frame_izq)
         frame_btn.pack(fill="x", pady=10)
 
         frame_der = tk.Frame(panel_principal, bg="white")
         panel_principal.add(frame_der)
         
-        tk.Label(frame_der, text="Mapa de la Red (Vista Satelital)", bg="white", font=("Arial", 10, "bold")).pack(pady=5)
-        
-        mapa = tk.Canvas(frame_der, bg="#e6e6e6", width=500, height=400)
-        mapa.pack(fill="both", expand=True, padx=10, pady=10)
+        tk.Label(frame_der, text="Mapa de la Red", bg="white", font=("Arial", 10, "bold")).pack(pady=5)
+        canvas_mapa = tk.Canvas(frame_der, bg="#e6e6e6", width=500, height=400)
+        canvas_mapa.pack(fill="both", expand=True, padx=10, pady=10)
 
         coords_estaciones = {} 
 
         def dibujar_mapa():
-            mapa.delete("all")
-            num_est = len(simulacion.estaciones)
+            canvas_mapa.delete("all")
+            estaciones = simulacion.estaciones
+            num_est = len(estaciones)
             
             if num_est == 0: 
-                mapa.create_text(250, 200, text="No hay estaciones cargadas.\nVe a 'Gestión' y crea una.", justify="center")
+                canvas_mapa.create_text(250, 200, text="No hay estaciones cargadas.", justify="center")
                 return
+
             centro_x, centro_y = 250, 200
             radio = 150
             angulo_paso = 360 / num_est
-            for i, est in enumerate(simulacion.estaciones):
+
+            for i, est in enumerate(estaciones):
                 angulo_rad = math.radians(i * angulo_paso)
                 x = centro_x + radio * math.cos(angulo_rad)
                 y = centro_y + radio * math.sin(angulo_rad)
+                # Guardamos usando el NOMBRE como clave
                 coords_estaciones[est.nombre] = (x, y)
 
             for ruta in simulacion.rutas:
-                if ruta.origen in coords_estaciones and ruta.destino in coords_estaciones:
-                    x1, y1 = coords_estaciones[ruta.origen]
-                    x2, y2 = coords_estaciones[ruta.destino]
-                    mapa.create_line(x1, y1, x2, y2, fill="#bdc3c7", width=4)
-                    mx, my = (x1+x2)/2, (y1+y2)/2
-                    mapa.create_text(mx, my, text=f"{ruta.distancia}km", font=("Arial", 8), fill="gray")
 
-            for est in simulacion.estaciones:
+                lista_puntos = ruta.estaciones 
+                
+                if len(lista_puntos) > 1:
+                    for i in range(len(lista_puntos) - 1):
+                        est_a = lista_puntos[i]
+                        est_b = lista_puntos[i+1]
+                        if est_a.nombre in coords_estaciones and est_b.nombre in coords_estaciones:
+                            x1, y1 = coords_estaciones[est_a.nombre]
+                            x2, y2 = coords_estaciones[est_b.nombre]
+                            
+                            # Línea gris de conexión
+                            canvas_mapa.create_line(x1, y1, x2, y2, fill="#bdc3c7", width=4)
+
+            # C) DIBUJAR ESTACIONES (Círculos azules)
+            for est in estaciones:
                 if est.nombre in coords_estaciones:
                     x, y = coords_estaciones[est.nombre]
-
                     r = 20
-                    mapa.create_oval(x-r, y-r, x+r, y+r, fill="#3498db", outline="white", width=2)
-                    mapa.create_text(x, y-30, text=est.nombre, font=("Arial", 9, "bold"), fill="#2c3e50")
-                    pax = est.pasajeros_esperando
-                    if pax > 0:
-                        mapa.create_text(x+25, y, text=f"{pax}", font=("Arial", 10, "bold"), fill="#c0392b", anchor="w")
+                    canvas_mapa.create_oval(x-r, y-r, x+r, y+r, fill="#3498db", outline="white", width=2)
+                    canvas_mapa.create_text(x, y-30, text=est.nombre, font=("Arial", 9, "bold"), fill="#2c3e50")
 
+            # D) DIBUJAR TRENES
+            # Tu clase Tren tiene: self.posicion = Objeto Estacion
             for tren in simulacion.trenes:
-                if tren.ubicacion_actual in coords_estaciones:
-                    tx, ty = coords_estaciones[tren.ubicacion_actual]
+                if tren.posicion and tren.posicion.nombre in coords_estaciones:
+                    tx, ty = coords_estaciones[tren.posicion.nombre]
+                    
+                    # Dibujar cuadrado naranja
                     tr = 12
-                    mapa.create_rectangle(tx-tr, ty-tr, tx+tr, ty+tr, fill="#f39c12", outline="black")
-                    mapa.create_text(tx, ty-18, text=tren.nombre[:6], font=("Arial", 7), fill="black")
+                    canvas_mapa.create_rectangle(tx-tr, ty-tr, tx+tr, ty+tr, fill="#f39c12", outline="black")
+                    canvas_mapa.create_text(tx, ty-18, text=tren.nombre[:6], font=("Arial", 8), fill="black")
 
+        # ==========================================
+        # 4. ACTUALIZACIÓN PANTALLA
+        # ==========================================
         def refrescar_pantalla():
-            try: hora = simulacion.hora_actual.strftime("%d/%m %H:%M")
+            # Reloj
+            try: hora = simulacion.hora_actual.strftime("%H:%M")
             except: hora = str(simulacion.hora_actual)
-            reloj.config(text=hora)
-            info.config(text=f"Estaciones: {len(simulacion.estaciones)} | Trenes: {len(simulacion.trenes)}")
-            lista_box.delete(0, tk.END)
-            for evt in simulacion.cola_eventos:
-                try: h = evt.tiempo.strftime("%H:%M")
-                except: h = "??"
-                lista_box.insert(tk.END, f"[{h}] {evt.descripcion}")
-            dibujar_mapa()
-        def btn_avanzar_click():
-            msg = simulacion.avanzar_siguiente_evento()
-            refrescar_pantalla()
-            if isinstance(msg, str):
-                messagebox.showinfo("Simulación", msg)
-        def btn_planificar_click():
-            if not simulacion.trenes or not simulacion.estaciones:
-                messagebox.showwarning("Error", "Primero debe crear Trenes y Estaciones en la pestaña 'Gestión'.")
-                return
-            win = tk.Toplevel()
-            win.title("Programar Salida")
-            win.geometry("300x300")
-
-            ttk.Label(win, text="Seleccione Tren:").pack(pady=5)
-            nombres_trenes = [t.nombre for t in simulacion.trenes]
-            cb_tren = ttk.Combobox(win, values=nombres_trenes, state="readonly")
-            cb_tren.pack()
-            if nombres_trenes: cb_tren.current(0)
+            lbl_reloj.config(text=hora)
             
-            ttk.Label(win, text="Estación Origen:").pack(pady=5)
-            nombres_est = [e.nombre for e in simulacion.estaciones]
-            cb_origen = ttk.Combobox(win, values=nombres_est, state="readonly")
-            cb_origen.pack()
-            if nombres_est: cb_origen.current(0)
+            # Lista de Eventos (Tu lógica usa eventos_confirmados)
+            lista_box.delete(0, tk.END)
+            # Mostramos los últimos 15 eventos
+            ultimos = simulacion.eventos_confirmados[-15:]
+            for evt in ultimos:
+                try: h = evt.instante.strftime("%H:%M")
+                except: h = "??"
+                
+                # Descripción segura
+                desc = f"{evt.tipo}"
+                if isinstance(evt.datos, dict) and "tren" in evt.datos:
+                     desc += f" | {evt.datos['tren'].nombre}"
+                
+                lista_box.insert(tk.END, f"[{h}] {desc}")
+            
+            # Mapa
+            dibujar_mapa()
 
-            ttk.Label(win, text="Estación Destino:").pack(pady=5)
-            cb_destino = ttk.Combobox(win, values=nombres_est, state="readonly")
-            cb_destino.pack()
+        def btn_avanzar_click():
+            # Llamamos a tu lógica avanzar_siguiente_evento
+            evento = simulacion.avanzar_siguiente_evento()
+            if evento:
+                refrescar_pantalla()
+            else:
+                messagebox.showinfo("Fin", "No hay más eventos pendientes.")
 
-            def confirmar():
-                t_nombre = cb_tren.get()
-                ori = cb_origen.get()
-                dest = cb_destino.get()
-
-                if ori == dest:
-                    messagebox.showerror("Error", "Origen y Destino no pueden ser iguales")
-                    return
-                tren_obj = next((t for t in simulacion.trenes if t.nombre == t_nombre), None)
-                mensaje = simulacion.planificar_viaje(tren_obj, ori, dest, simulacion.hora_actual)
- 
-                if "Error" in mensaje or "BLOQUEO" in mensaje:
-                    messagebox.showerror("Problema", mensaje)
-                else:
-                    messagebox.showinfo("Éxito", mensaje)
-                    refrescar_pantalla() 
-                    win.destroy()
-
-            ttk.Button(win, text="PROGRAMAR VIAJE", command=confirmar).pack(pady=20)
-        btn_plan = tk.Button(frame_btn, text="+ Programar Viaje", 
-                             bg="#3498db", fg="white", font=("Arial", 10),
-                             command=btn_planificar_click)
-        btn_plan.pack(side="left", padx=5, fill="x", expand=True)
-
-        btn_avanzar = tk.Button(frame_btn, text=">> AVANZAR EVENTO >>", 
-                        bg="green", fg="white", font=("Arial", 10, "bold"),
+        # Botón Avanzar
+        btn = tk.Button(frame_btn, text=">> AVANZAR EVENTO >>", 
+                        bg="green", fg="white", font=("Arial", 11, "bold"),
                         command=btn_avanzar_click)
-        btn_avanzar.pack(side="left", padx=5, fill="x", expand=True)
+        btn.pack(side="left", padx=10, fill="x", expand=True)
+
+        # Iniciar todo visualmente
         refrescar_pantalla()
+
     except Exception as e:
-        tk.Label(frame_padre, text=f"Error en simulación: {e}", fg="red").pack()
-        print(f"Error detallado: {e}")
+        tk.Label(frame_padre, text=f"Error: {e}", fg="red").pack()
+        print(f"Error UI: {e}")
