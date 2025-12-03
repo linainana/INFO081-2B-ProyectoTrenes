@@ -11,7 +11,7 @@ class Estacion:
         self.vias = []
         
     def agregar_via(self):
-        self.vias.append(via)
+        self.vias.append(Via)
 
     def agregar_conexion(self, estacion_destino):
         if estacion_destino not in self.conexiones:

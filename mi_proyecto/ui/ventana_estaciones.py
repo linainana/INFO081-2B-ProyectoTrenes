@@ -42,11 +42,9 @@ def ver_estaciones(root, ventana, colores):
                 reg = entry_reg.get()
                 pob = entry_pob.get()
                 vias = entry_vias.get()
-                
                 if not nom or not pob:
                     messagebox.showwarning("Error", "Faltan datos")
                     return
-
                 nueva_est = {
                     "nombre": nom, 
                     "region": reg, 
@@ -67,7 +65,6 @@ def ver_estaciones(root, ventana, colores):
                 
                 messagebox.showinfo("Éxito", "Estación guardada.")
                 crear_estaciones.destroy()
-
             ttk.Button(crear_estaciones, text="GUARDAR", command=guardar_datos).pack(pady=20)
 
         def editar_estaciones():
@@ -102,7 +99,6 @@ def ver_estaciones(root, ventana, colores):
                 target = entry_nombre.get()
                 ruta_config = os.path.join(base_dir, "..", "config")
                 archivo = os.path.join(ruta_config, "estaciones.json")
-
                 if not os.path.exists(archivo):
                     messagebox.showerror("Error", "No hay datos.")
                     return
@@ -111,7 +107,6 @@ def ver_estaciones(root, ventana, colores):
                     lista = json.load(f)
 
                 nueva_lista = [e for e in lista if e["nombre"] != target]
-
                 if len(nueva_lista) == len(lista):
                     messagebox.showwarning("Error", "No se encontró esa estación.")
                 else:
@@ -128,8 +123,8 @@ def ver_estaciones(root, ventana, colores):
             v_estado.geometry("400x400") 
             v_estado.config(bg=colores["fondo"])
 
-            lbl_titulo = ttk.Label(v_estado, text="Base de Datos Actual:")
-            lbl_titulo.pack(pady=10)
+            titulo = ttk.Label(v_estado, text="Base de Datos Actual:")
+            titulo.pack(pady=10)
 
             texto1 = tk.Text(v_estado, width=40, height=15)
             texto1.pack(padx=10, pady=10)
@@ -151,15 +146,11 @@ def ver_estaciones(root, ventana, colores):
             texto1.config(state=tk.DISABLED)
 
             ttk.Button(v_estado, text="Cerrar", command=v_estado.destroy).pack(pady=10)
-
         boton_crear = ttk.Button(ver_estacion, text="Crear estación", command=crear_estaciones)
         boton_crear.pack(pady=10)
-
         boton_editar = ttk.Button(ver_estacion, text="Editar estación", command=editar_estaciones)
         boton_editar.pack(pady=10)
-
         boton_eliminar = ttk.Button(ver_estacion, text="Eliminar estación", command=eliminar_estaciones)
         boton_eliminar.pack(pady=10)
-
         boton_estado = ttk.Button(ver_estacion, text="Estado", command=ver_estado)
         boton_estado.pack(pady=10)

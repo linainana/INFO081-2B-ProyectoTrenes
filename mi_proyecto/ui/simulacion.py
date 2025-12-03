@@ -13,41 +13,34 @@ def iniciar_simulacion_en_frame(frame_padre):
 
     try:
         from logic.estado_de_simulacion import EstadoSimulacion
-        
         simulacion = EstadoSimulacion()
 
         def cargar_datos_frescos():
             simulacion.estado_inicial_simulacion()
-
             if simulacion.trenes and simulacion.rutas:
                 simulacion.cola_eventos = []
                 r = simulacion.rutas[0]
                 t = simulacion.trenes[0]
                 simulacion.planificar_viaje(t, r.origen, r.destino, simulacion.hora_actual)
-
         cargar_datos_frescos()
 
         panel_principal = tk.PanedWindow(frame_padre, orient=tk.HORIZONTAL)
         panel_principal.pack(fill="both", expand=True)
-
         frame_izq = tk.Frame(panel_principal, width=320)
         panel_principal.add(frame_izq)
-
         frame_stats = tk.Frame(frame_izq, bg="#f0f0f0", bd=2, relief="groove")
         frame_stats.pack(fill="x", padx=5, pady=5)
-        
-        lbl_reloj = tk.Label(frame_stats, text="07:00", font=("Arial", 16, "bold"), bg="#f0f0f0", fg="#333")
-        lbl_reloj.pack(pady=5)
-        
-        lbl_info = tk.Label(frame_stats, text="Cargando...", bg="#f0f0f0", font=("Arial", 9))
-        lbl_info.pack(pady=5)
+        reloj = tk.Label(frame_stats, text="07:00", font=("Arial", 16, "bold"), bg="#f0f0f0", fg="#333")
+        reloj.pack(pady=5)
+        info = tk.Label(frame_stats, text="Cargando...", bg="#f0f0f0", font=("Arial", 9))
+        info.pack(pady=5)
 
         def btn_recargar_click():
             cargar_datos_frescos()    
             refrescar_pantalla()       
             messagebox.showinfo("Actualizado", "Datos recargados desde archivos JSON.")
 
-        btn_refresh = tk.Button(frame_stats, text="🔄 Recargar Datos Nuevos", command=btn_recargar_click, bg="orange", fg="black")
+        btn_refresh = tk.Button(frame_stats, text="Recargar Datos Nuevos", command=btn_recargar_click, bg="orange", fg="black")
         btn_refresh.pack(fill="x", padx=10, pady=5)
 
         tk.Label(frame_izq, text="Cola de Eventos:", font=("Arial", 10, "bold")).pack(anchor="w", padx=5)
@@ -62,23 +55,21 @@ def iniciar_simulacion_en_frame(frame_padre):
         
         tk.Label(frame_der, text="Mapa de la Red (Vista Satelital)", bg="white", font=("Arial", 10, "bold")).pack(pady=5)
         
-        canvas_mapa = tk.Canvas(frame_der, bg="#e6e6e6", width=500, height=400)
-        canvas_mapa.pack(fill="both", expand=True, padx=10, pady=10)
+        mapa = tk.Canvas(frame_der, bg="#e6e6e6", width=500, height=400)
+        mapa.pack(fill="both", expand=True, padx=10, pady=10)
 
         coords_estaciones = {} 
 
         def dibujar_mapa():
-            canvas_mapa.delete("all")
+            mapa.delete("all")
             num_est = len(simulacion.estaciones)
             
             if num_est == 0: 
-                canvas_mapa.create_text(250, 200, text="No hay estaciones cargadas.\nVe a 'Gestión' y crea una.", justify="center")
+                mapa.create_text(250, 200, text="No hay estaciones cargadas.\nVe a 'Gestión' y crea una.", justify="center")
                 return
-
             centro_x, centro_y = 250, 200
             radio = 150
             angulo_paso = 360 / num_est
-
             for i, est in enumerate(simulacion.estaciones):
                 angulo_rad = math.radians(i * angulo_paso)
                 x = centro_x + radio * math.cos(angulo_rad)
@@ -89,55 +80,48 @@ def iniciar_simulacion_en_frame(frame_padre):
                 if ruta.origen in coords_estaciones and ruta.destino in coords_estaciones:
                     x1, y1 = coords_estaciones[ruta.origen]
                     x2, y2 = coords_estaciones[ruta.destino]
-                    canvas_mapa.create_line(x1, y1, x2, y2, fill="#bdc3c7", width=4)
+                    mapa.create_line(x1, y1, x2, y2, fill="#bdc3c7", width=4)
                     mx, my = (x1+x2)/2, (y1+y2)/2
-                    canvas_mapa.create_text(mx, my, text=f"{ruta.distancia}km", font=("Arial", 8), fill="gray")
+                    mapa.create_text(mx, my, text=f"{ruta.distancia}km", font=("Arial", 8), fill="gray")
 
             for est in simulacion.estaciones:
                 if est.nombre in coords_estaciones:
                     x, y = coords_estaciones[est.nombre]
 
                     r = 20
-                    canvas_mapa.create_oval(x-r, y-r, x+r, y+r, fill="#3498db", outline="white", width=2)
-                    canvas_mapa.create_text(x, y-30, text=est.nombre, font=("Arial", 9, "bold"), fill="#2c3e50")
-
+                    mapa.create_oval(x-r, y-r, x+r, y+r, fill="#3498db", outline="white", width=2)
+                    mapa.create_text(x, y-30, text=est.nombre, font=("Arial", 9, "bold"), fill="#2c3e50")
                     pax = est.pasajeros_esperando
                     if pax > 0:
-                        canvas_mapa.create_text(x+25, y, text=f"👤{pax}", font=("Arial", 10, "bold"), fill="#c0392b", anchor="w")
+                        mapa.create_text(x+25, y, text=f"👤{pax}", font=("Arial", 10, "bold"), fill="#c0392b", anchor="w")
 
             for tren in simulacion.trenes:
                 if tren.ubicacion_actual in coords_estaciones:
                     tx, ty = coords_estaciones[tren.ubicacion_actual]
                     tr = 12
-                    canvas_mapa.create_rectangle(tx-tr, ty-tr, tx+tr, ty+tr, fill="#f39c12", outline="black")
-                    canvas_mapa.create_text(tx, ty-18, text=tren.nombre[:6], font=("Arial", 7), fill="black")
+                    mapa.create_rectangle(tx-tr, ty-tr, tx+tr, ty+tr, fill="#f39c12", outline="black")
+                    mapa.create_text(tx, ty-18, text=tren.nombre[:6], font=("Arial", 7), fill="black")
 
         def refrescar_pantalla():
             try: hora = simulacion.hora_actual.strftime("%d/%m %H:%M")
             except: hora = str(simulacion.hora_actual)
-            lbl_reloj.config(text=hora)
-
-            lbl_info.config(text=f"Estaciones: {len(simulacion.estaciones)} | Trenes: {len(simulacion.trenes)}")
-
+            reloj.config(text=hora)
+            info.config(text=f"Estaciones: {len(simulacion.estaciones)} | Trenes: {len(simulacion.trenes)}")
             lista_box.delete(0, tk.END)
             for evt in simulacion.cola_eventos:
                 try: h = evt.tiempo.strftime("%H:%M")
                 except: h = "??"
                 lista_box.insert(tk.END, f"[{h}] {evt.descripcion}")
- 
             dibujar_mapa()
-
         def btn_avanzar_click():
             msg = simulacion.avanzar_siguiente_evento()
             refrescar_pantalla()
             if isinstance(msg, str):
                 messagebox.showinfo("Simulación", msg)
-
         def btn_planificar_click():
             if not simulacion.trenes or not simulacion.estaciones:
                 messagebox.showwarning("Error", "Primero debe crear Trenes y Estaciones en la pestaña 'Gestión'.")
                 return
-
             win = tk.Toplevel()
             win.title("Programar Salida")
             win.geometry("300x300")
@@ -147,7 +131,7 @@ def iniciar_simulacion_en_frame(frame_padre):
             cb_tren = ttk.Combobox(win, values=nombres_trenes, state="readonly")
             cb_tren.pack()
             if nombres_trenes: cb_tren.current(0)
-
+            
             ttk.Label(win, text="Estación Origen:").pack(pady=5)
             nombres_est = [e.nombre for e in simulacion.estaciones]
             cb_origen = ttk.Combobox(win, values=nombres_est, state="readonly")

@@ -1,14 +1,11 @@
 import tkinter as tk
 from tkinter import ttk, messagebox
-
 from ui.simulacion import iniciar_simulacion_en_frame
 from .ventanas_trenes import ver_trenes
 from .ventana_estaciones import ver_estaciones
 from .ventana_rutas import ver_rutas
 
-
 def Ingreso_ID(root, ventana, colores):
-
     ventana_ingreso = tk.Toplevel(root)
     ventana_ingreso.title("Ingreso ID")
     ventana_ingreso.geometry(f"{ventana['ancho']}x{ventana['altura']}")
@@ -27,14 +24,11 @@ def Ingreso_ID(root, ventana, colores):
     )
     boton_registro.pack(pady=20)
 
-
 def abrir_ID(entry_id, root, ventana, colores):
-
     user_id = entry_id.get().strip()
     if not user_id:
         messagebox.showwarning("Atención", "Debe ingresar un ID antes de continuar.")
         return
-
     entry_id.winfo_toplevel().destroy()
 
     ventana_ID = tk.Toplevel(root)
@@ -50,25 +44,14 @@ def abrir_ID(entry_id, root, ventana, colores):
     frame_datos = ttk.Frame(nuevo_notebook)
     nuevo_notebook.add(frame_datos, text="Gestión de Datos")
 
-    ttk.Button(
-        frame_datos,
-        text="Ver trenes",
-        command=lambda: ver_trenes(root, ventana, colores)
-    ).pack(pady=10)
+    ttk.Button(frame_datos, text="Ver trenes", command=lambda: ver_trenes(root, ventana, colores) ).pack(pady=10)
+    ttk.Button(frame_datos,text="Ver rutas",command=lambda: ver_rutas(root, ventana, colores)).pack(pady=10)
+    ttk.Button(frame_datos,text="Ver estaciones",command=lambda: ver_estaciones(root, ventana, colores)).pack(pady=10)
 
-    ttk.Button(
-        frame_datos,
-        text="Ver rutas",
-        command=lambda: ver_rutas(root, ventana, colores)
-    ).pack(pady=10)
-
-    ttk.Button(
-        frame_datos,
-        text="Ver estaciones",
-        command=lambda: ver_estaciones(root, ventana, colores)
-    ).pack(pady=10)
-
-    frame_simulacion = ttk.Frame(nuevo_notebook)
+    frame_simulacion = tk.Frame(nuevo_notebook)
     nuevo_notebook.add(frame_simulacion, text="Simulación EFE")
-
-    iniciar_simulacion_en_frame(frame_simulacion)
+    ventana_ID.update_idletasks()
+    ventana_ID.update()
+    nuevo_notebook.select(frame_simulacion)
+    
+    nuevo_notebook.select(0)
