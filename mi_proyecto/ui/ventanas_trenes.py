@@ -28,8 +28,7 @@ def ver_trenes(root, ventana, colores):
             ttk.Label(crear_trenes, text="Velocidad (km/h):").pack(pady=5)
             entry_vel = ttk.Entry(crear_trenes)
             entry_vel.pack()
-            
-            # --- CAMBIO: Pauta pide Vagones ---
+
             ttk.Label(crear_trenes, text="Cantidad de Vagones:").pack(pady=5)
             entry_vagones = ttk.Entry(crear_trenes)
             entry_vagones.pack()
@@ -37,7 +36,7 @@ def ver_trenes(root, ventana, colores):
             ttk.Label(crear_trenes, text="Capacidad por Vagón:").pack(pady=5)
             entry_cap_vagon = ttk.Entry(crear_trenes)
             entry_cap_vagon.pack()
-            # ----------------------------------
+
 
             def guardar_datos():
                 nom = entry_nombre.get()
@@ -50,23 +49,19 @@ def ver_trenes(root, ventana, colores):
                     return
 
                 try:
-                    # Calculamos la capacidad total automáticamente
+
                     capacidad_total = int(n_vagones) * int(cap_vagon)
-                    
-                    # Estructura que cumple con el requisito de "lista de vagones"
                     lista_vagones = [{"id": i+1, "capacidad": int(cap_vagon)} for i in range(int(n_vagones))]
                     
                 except ValueError:
                     messagebox.showerror("Error", "Velocidad y Vagones deben ser números")
                     return
-
-                # Guardamos con el formato detallado
                 nuevo_tren = {
                     "nombre": nom, 
                     "velocidad": int(vel), 
                     "capacidad": capacidad_total,
-                    "vagones": lista_vagones, # <-- REQUISITO CUMPLIDO
-                    "accion": "Detenido"      # <-- REQUISITO CUMPLIDO
+                    "vagones": lista_vagones, 
+                    "accion": "Detenido"     
                 }
 
                 ruta_config = os.path.join(base_dir, "..", "config")
@@ -118,12 +113,10 @@ def ver_trenes(root, ventana, colores):
                     messagebox.showerror("Error", "No hay trenes guardados para editar.")
                     return
 
-                # 1. Cargar lista
                 lista_trenes = []
                 with open(archivo, "r", encoding="utf-8") as f:
                     lista_trenes = json.load(f)
 
-                # 2. Buscar y modificar
                 encontrado = False
                 for tren in lista_trenes:
                     if tren["nombre"] == target_name:
@@ -133,14 +126,12 @@ def ver_trenes(root, ventana, colores):
                         break
                 
                 if encontrado:
-                    # 3. Guardar cambios
                     with open(archivo, "w", encoding="utf-8") as f:
                         json.dump(lista_trenes, f, indent=4)
                     messagebox.showinfo("Éxito", "Tren actualizado correctamente.")
                     editar_trenes.destroy()
                 else:
                     messagebox.showwarning("Error", f"No se encontró el tren '{target_name}'")
-
             boton_guardar = ttk.Button(editar_trenes, text="GUARDAR CAMBIOS", command=guardar_cambios)
             boton_guardar.pack(pady=20)
         
@@ -163,19 +154,14 @@ def ver_trenes(root, ventana, colores):
                 if not os.path.exists(archivo):
                     messagebox.showerror("Error", "No hay datos.")
                     return
-
-                # 1. Cargar
                 lista_trenes = []
                 with open(archivo, "r", encoding="utf-8") as f:
                     lista_trenes = json.load(f)
-
-                # 2. Filtrar (Guardamos todos MENOS el que queremos borrar)
                 nueva_lista = [t for t in lista_trenes if t["nombre"] != target_name]
 
                 if len(nueva_lista) == len(lista_trenes):
                     messagebox.showwarning("Error", "No se encontró ese tren.")
                 else:
-                    # 3. Guardar la nueva lista
                     with open(archivo, "w", encoding="utf-8") as f:
                         json.dump(nueva_lista, f, indent=4)
                     messagebox.showinfo("Éxito", "Tren eliminado.")
@@ -186,35 +172,30 @@ def ver_trenes(root, ventana, colores):
 
         def ver_estado():
             v_estado = tk.Toplevel(root)
-            v_estado.title("LISTADO DE TRENES") # Cambiar titulo según corresponda
-            v_estado.geometry("400x400") # Un poco más grande para ver lista
+            v_estado.title("LISTADO DE TRENES")
+            v_estado.geometry("400x400") 
             v_estado.config(bg=colores["fondo"])
 
             lbl_titulo = ttk.Label(v_estado, text="Base de Datos Actual:")
             lbl_titulo.pack(pady=10)
 
-            # Usamos un cuadro de texto con scroll para ver todo
-            texto_info = tk.Text(v_estado, width=40, height=15)
-            texto_info.pack(padx=10, pady=10)
+            texto1 = tk.Text(v_estado, width=40, height=15)
+            texto1.pack(padx=10, pady=10)
 
-            # Cargar y mostrar
             ruta_config = os.path.join(base_dir, "..", "config")
-            archivo = os.path.join(ruta_config, "trenes.json") # <--- CAMBIAR AQUI PARA ESTACIONES/RUTAS
+            archivo = os.path.join(ruta_config, "trenes.json")
 
             if os.path.exists(archivo):
                 try:
                     with open(archivo, "r", encoding="utf-8") as f:
                         data = json.load(f)
-                    # Convertir JSON a texto bonito
-                    texto_bonito = json.dumps(data, indent=2, ensure_ascii=False)
-                    texto_info.insert(tk.END, texto_bonito)
+                    texto2 = json.dumps(data, indent=2, ensure_ascii=False)
+                    texto1.insert(tk.END, texto2)
                 except Exception as e:
-                    texto_info.insert(tk.END, f"Error leyendo archivo: {e}")
+                    texto1.insert(tk.END, f"Error leyendo archivo: {e}")
             else:
-                texto_info.insert(tk.END, "No hay datos guardados aún.")
-
-            # Hacer el texto de solo lectura
-            texto_info.config(state=tk.DISABLED)
+                texto1.insert(tk.END, "No hay datos guardados aún.")
+            texto1.config(state=tk.DISABLED)
 
             ttk.Button(v_estado, text="Cerrar", command=v_estado.destroy).pack(pady=10)
 

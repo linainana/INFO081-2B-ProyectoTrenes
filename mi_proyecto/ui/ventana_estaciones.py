@@ -131,8 +131,8 @@ def ver_estaciones(root, ventana, colores):
             lbl_titulo = ttk.Label(v_estado, text="Base de Datos Actual:")
             lbl_titulo.pack(pady=10)
 
-            texto_info = tk.Text(v_estado, width=40, height=15)
-            texto_info.pack(padx=10, pady=10)
+            texto1 = tk.Text(v_estado, width=40, height=15)
+            texto1.pack(padx=10, pady=10)
 
             ruta_config = os.path.join(base_dir, "..", "config")
             archivo = os.path.join(ruta_config, "estaciones.json")
@@ -141,14 +141,14 @@ def ver_estaciones(root, ventana, colores):
                 try:
                     with open(archivo, "r", encoding="utf-8") as f:
                         data = json.load(f)
-                    texto_2 = json.dumps(data, indent=2, ensure_ascii=False)
-                    texto_info.insert(tk.END, texto_2)
+                    texto2 = json.dumps(data, indent=2, ensure_ascii=False)
+                    texto1.insert(tk.END, texto2)
                 except Exception as e:
-                    texto_info.insert(tk.END, f"Error leyendo archivo: {e}")
+                    texto1.insert(tk.END, f"Error leyendo archivo: {e}")
             else:
-                texto_info.insert(tk.END, "No hay datos guardados aún.")
+                texto1.insert(tk.END, "No hay datos guardados aún.")
 
-            texto_info.config(state=tk.DISABLED)
+            texto1.config(state=tk.DISABLED)
 
             ttk.Button(v_estado, text="Cerrar", command=v_estado.destroy).pack(pady=10)
 
