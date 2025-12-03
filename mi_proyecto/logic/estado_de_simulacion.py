@@ -1,6 +1,6 @@
 from datetime import datetime, timedelta
-from events.evento import Evento
-from events.gestor_eventos import GestorEventos
+from logic.evento import Evento
+from logic.gestor_eventos import GestorEventos
 
 from models.trenes import Tren
 from models.estaciones import Estacion
