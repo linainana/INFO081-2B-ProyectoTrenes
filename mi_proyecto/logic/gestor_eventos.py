@@ -36,12 +36,12 @@ class GestorEventos:
 
     def reemplazar_eventos_futuros(self, id_evento_corte: int, nuevos_eventos: List[Evento]):
         eventos_confirmados = [
-            e for e in self.todos_los_eventos if e.id <= id_evento_corte
+            e for e in self.todos_los_eventos if e.id_evento <= id_evento_corte
         ]
 
         self.todos_los_eventos = eventos_confirmados + nuevos_eventos
 
         self._heap = []
         for e in self.listar_eventos():
-            heapq.heappush(self._heap, (e.instante, e.id, e))
+            heapq.heappush(self._heap, (e.instante, e.id_evento, e))
 
