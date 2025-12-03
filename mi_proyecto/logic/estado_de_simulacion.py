@@ -18,7 +18,6 @@ class EstadoSimulacion:
         self.eventos_confirmados = []
 
     def estado_inicial_simulacion(self):
-        # 1. Crear Estaciones
         e1 = Estacion(1, "Estación Central", "RM", 8242459)
         e2 = Estacion(2, "Rancagua", "O’Higgins", 274407)
         e3 = Estacion(3, "Talca", "Maule", 242344)
