@@ -30,12 +30,16 @@ class Tren:
         if not self.ruta:
             print("Este tren no tiene ruta asignada.")
             return None
-
-        siguiente = self.ruta.obtener_siguiente(self.posicion)
-        if siguiente:
-            self.posicion = siguiente
-            return siguiente
-        else:
-            print(f"El tren {self.nombre} ya llegó al final de la ruta.")
+        if self.posicion not in self.ruta.estaciones:
+            print("La posición actual no está en la ruta.")
             return None
+
+        estaciones = self.ruta.estaciones
+        idx = estaciones.index(self.posicion)
+        if idx + 1 < len(estaciones):
+            self.posicion = estaciones[idx + 1]
+            return self.posicion
+
+        print(f"El tren {self.nombre} ya llegó al final de la ruta.")
+        return None
     
