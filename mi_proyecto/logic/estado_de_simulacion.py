@@ -64,7 +64,7 @@ class EstadoSimulacion:
                 for destino in conexiones[estacion.nombre]:
                     estacion.agregar_conexion(destino)
 
-     def avanzar_tiempo(self, minutos=1):
+    def avanzar_tiempo(self, minutos=1):
         self.hora_actual += timedelta(minutes=minutos)
 
     def programar_evento(self, instante, tipo, datos):
