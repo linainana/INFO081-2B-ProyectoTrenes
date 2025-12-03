@@ -1,7 +1,7 @@
 from datetime import datetime, timedelta
 from logic.evento import Evento
 from logic.gestor_eventos import GestorEventos
-from logic.Líneatemporal import lineatemporal
+from logic.LíneaTemporal import LíneaTiempo
 from models.trenes import Tren
 from models.estaciones import Estacion
 from models.rutas import Ruta
@@ -18,7 +18,7 @@ class EstadoSimulacion:
         self.vias = []
         self.gestor_eventos = GestorEventos()
         self.eventos_confirmados = []
-        self.timeline = TimeLine(self)
+        self.línea_tiempo = LíneaTiempo(self)
 
     def estado_inicial_simulacion(self):
         e1 = Estacion(1, "Estación Central", "RM", 8242459)
@@ -98,10 +98,6 @@ class EstadoSimulacion:
             print(f"{tren.nombre} llegó al final de su ruta")
 
     def crear_linea_temporal(self, id_evento):
-        """
-        Crea una nueva simulación exactamente como estaba en el
-        evento con ID = id_evento.
-        """
         return self.timeline.create_new_timeline(id_evento)
 
     def to_dict(self):

@@ -2,18 +2,12 @@ import json
 import os
 
 class EstadoGuardado:
-  """
-  Maneja la lectura y escritura del estado de la simulacion en JSON.
-  """
   
   def __init__(self, ruta_archivo="config/estado_guardado.json"):
     self.ruta_archivo = ruta_archivo
 
 
   def guardar(self, estado_simulacion):
-    """
-    Guarda el diccionario 'estado' en un archivo JSON.
-    """
 
     try:
       estado_dict = estado_simulacion.to_dict()
@@ -27,10 +21,6 @@ class EstadoGuardado:
 
   
   def cargar(self, clase_estado_simulacion):
-    """
-    Carga y devuelve el diccionario con el estado desde el archivo JSON.
-    Si no existe o está corrupto, devuelve un estado por defecto automaticamente.
-    """
 
     if not os.path.exists(self.ruta_archivo):
       print(f"No existe {self.ruta_archivo} - se utilizara estado por defecto.")
