@@ -1,4 +1,5 @@
 from datetime import datetime, timedelta
+from types import SimpleNamespace
 from logic.evento import Evento
 from logic.gestor_eventos import GestorEventos
 from models.trenes import Tren
@@ -16,8 +17,6 @@ class EstadoSimulacion:
         self.vias = []
         self.gestor_eventos = GestorEventos()
         self.eventos_confirmados = []
-        ##### Sistema de líneas temporales
-        #####self.timeline = TimeLine(self)
 
     def estado_inicial_simulacion(self):
         e1 = Estacion(1, "Estación Central", "RM", 8242459)
@@ -26,18 +25,13 @@ class EstadoSimulacion:
         e4 = Estacion(4, "Chillán", "Ñuble", 204091)
 
         self.estaciones = [e1, e2, e3, e4]
+         
+        e1.agregar_via(capacidad=1)
+        e2.agregar_via(capacidad=1)
+        e3.agregar_via(capacidad=1)
+        e4.agregar_via(capacidad=1)
 
-        via1 = Via("V1", estacion=e1)
-        via2 = Via("V2", estacion=e2)
-        via3 = Via("V3", estacion=e3)
-        via4 = Via("V4", estacion=e4)
-
-        e1.agregar_via(via1)
-        e2.agregar_via(via2)
-        e3.agregar_via(via3)
-        e4.agregar_via(via4)
-
-        self.vias = [via1, via2, via3, via4]
+        self.vias = [e1.vias[-1], e2.vias[-1], e3.vias[-1], e4.vias[-1]]
 
         self.rutas = [
             Ruta("R1", [e1,e2], distancia_total=87),
@@ -52,8 +46,13 @@ class EstadoSimulacion:
             Tren("T001", "Tren BMU", 160, 236, ruta=self.rutas[0]),
             Tren("T002", "Tren EMU – EFE SUR", 120, 236, ruta=self.rutas[1])
         ]
-
-        # Conexiones
+         
+         for tren in self.trenes:
+            estacion_inicial = tren.posicion
+            if estacion_inicial and estacion_inicial.vias:
+                via = estacion_inicial.vias[0]
+                via.tren_ingresa(tren)
+                     
         conexiones = {
             "Estación Central": ["Rancagua"],
             "Rancagua": ["Talca", "Estación Central"],
@@ -67,8 +66,10 @@ class EstadoSimulacion:
                     estacion.agregar_conexion(destino)
 
     def programar_evento(self, instante, tipo, datos):
-        evento = self.gestor_eventos.crear_evento(instante, tipo, datos)
+         """Correcto: crear evento directamente sin método inexistente."""
+        evento = Evento(instante, tipos, datos):
         self.gestor_eventos.agregar_evento(evento)
+          return evento
 
     def avanzar_siguiente_evento(self):
         evento = self.gestor_eventos.obtener_siguiente_evento()
@@ -77,14 +78,9 @@ class EstadoSimulacion:
             print("No hay más eventos")
             return None
 
-        # Avanzar tiempo a la hora del evento
         self.hora_actual = evento.instante
-        # Guardarlo en historial
         self.eventos_confirmados.append(evento)
-        # Guardar snapshot
-        event_index = len(self.eventos_confirmados) - 1
-        self.timeline.save_snapshot(self, event_index)
-        # Procesar evento según tipo
+         
         if evento.tipo == "movimiento_tren":
             self._procesar_movimiento_tren(evento)
 
@@ -112,18 +108,15 @@ class EstadoSimulacion:
             "hora_actual": self.hora_actual.isoformat(),
             "eventos_confirmados": [e.convertir_a_diccionario() for e in self.eventos_confirmado],
             "eventos_futuros": [ev.convertir_a_diccionario() for ev in self.gestor_eventos.todos_los_eventos],
-            # Si quieres agregar trenes/estaciones también puedo hacerlo
         }
     @staticmethod
     def from_dict(data):
         estado = EstadoSimulacion()
-        # Hora
         estado.hora_actual = datetime.fromisoformat(data["hora_actual"])
-         # Restaurar eventos futuros
         for ev_data in data["eventos_futuros"]:
             ev = Evento.desde_diccionario(ev_data)
             estado.gestor_eventos.agregar_evento(ev)
-         # Restaurar confirmados
+
         for ev_data in data["eventos_confirmados"]:
             ev = Evento.desde_diccionario(ev_data)
             estado.eventos_confirmados.append(ev)
