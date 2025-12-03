@@ -1,7 +1,7 @@
 import heapq
 from typing import List
 from datetime import datetime
-from .evento import Evento
+from logic.Evento import Evento
 
 class GestorEventos:
 

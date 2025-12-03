@@ -24,5 +24,5 @@ class Via:
 
   def descripcion_via(self):
     return f"Vía {self.id_via} en {self.estacion.nombre} - "
-    f"Ocupacion {len(self.trenes_actuales)}/{self.capacidad}")
+    (f"Ocupacion {len(self.trenes_actuales)}/{self.capacidad}")
 

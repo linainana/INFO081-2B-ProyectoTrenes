@@ -1,0 +1,15 @@
+[
+    {
+        "nombre": "few",
+        "region": "fes",
+        "poblacion": 432,
+        "vias": [
+            {
+                "id": 1,
+                "orientacion": "norte",
+                "ocupada": false
+            }
+        ],
+        "flujo_acumulado": 0
+    }
+]

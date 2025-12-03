@@ -1,0 +1,22 @@
+[
+    {
+        "nombre": "hola",
+        "velocidad": 123,
+        "capacidad": 6,
+        "vagones": [
+            {
+                "id": 1,
+                "capacidad": 2
+            },
+            {
+                "id": 2,
+                "capacidad": 2
+            },
+            {
+                "id": 3,
+                "capacidad": 2
+            }
+        ],
+        "accion": "Detenido"
+    }
+]
