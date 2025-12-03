@@ -9,9 +9,11 @@ pasajeros en los horarios disponibles
 3. Indicadores en la interfaz:
 
    - Cantidad de personas activas: Muestra el número total de personas actualmente dentro de la simulación.  
-   Se actualiza a medida que las personas inician o finalizan sus recorridos entre estaciones.
+   Se actualiza a medida que las personas inician o finalizan sus recorridos entre estaciones. Con el fin de poder crear trenes 
+   que vayan acorde al numero de personas dentro de la simulacion.
    - Cantidad de trenes activos:  Muestra el número total de trenes actualmente en movimiento dentro de la simulación.  
-   Se actualiza a medida que los trenes terminen sus recorridos o empiecen. -----------
+   Se actualiza a medida que los trenes terminen sus recorridos o empiecen, con el fin del que el operador pueda, con ayuda del indicador
+   de personas eliminar, redireccionar, o crear más trenes. -----------
 
 De esta manera el operario conociendo estos datos, puede tomar decisiones de manera eficaz, como por ejemplo poner más trenes
 si el flujo de personas es alto. 
