@@ -93,7 +93,7 @@ def iniciar_simulacion_en_frame(frame_padre):
                     mapa.create_text(x, y-30, text=est.nombre, font=("Arial", 9, "bold"), fill="#2c3e50")
                     pax = est.pasajeros_esperando
                     if pax > 0:
-                        mapa.create_text(x+25, y, text=f"👤{pax}", font=("Arial", 10, "bold"), fill="#c0392b", anchor="w")
+                        mapa.create_text(x+25, y, text=f"{pax}", font=("Arial", 10, "bold"), fill="#c0392b", anchor="w")
 
             for tren in simulacion.trenes:
                 if tren.ubicacion_actual in coords_estaciones:
