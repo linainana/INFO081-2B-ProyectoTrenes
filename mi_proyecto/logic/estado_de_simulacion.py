@@ -1,5 +1,4 @@
 from datetime import datetime, timedelta
-from types import SimpleNamespace
 from logic.evento import Evento
 from logic.gestor_eventos import GestorEventos
 from models.trenes import Tren
@@ -67,7 +66,7 @@ class EstadoSimulacion:
 
     def programar_evento(self, instante, tipo, datos):
          """Correcto: crear evento directamente sin método inexistente."""
-        evento = Evento(instante, tipos, datos):
+        evento = Evento(instante, tipo, datos)
         self.gestor_eventos.agregar_evento(evento)
           return evento
 
@@ -106,7 +105,7 @@ class EstadoSimulacion:
     def to_dict(self):
         return {
             "hora_actual": self.hora_actual.isoformat(),
-            "eventos_confirmados": [e.convertir_a_diccionario() for e in self.eventos_confirmado],
+            "eventos_confirmados": [e.convertir_a_diccionario() for e in self.eventos_confirmados],
             "eventos_futuros": [ev.convertir_a_diccionario() for ev in self.gestor_eventos.todos_los_eventos],
         }
     @staticmethod
