@@ -68,7 +68,6 @@ class EstadoSimulacion:
                     estacion.agregar_conexion(destino)
 
     def programar_evento(self, instante, tipo, datos):
-         """Correcto: crear evento directamente sin método inexistente."""
         evento = Evento(instante, tipo, datos)
         self.gestor_eventos.agregar_evento(evento)
           return evento
@@ -99,10 +98,6 @@ class EstadoSimulacion:
             print(f"{tren.nombre} llegó al final de su ruta")
 
     def crear_linea_temporal(self, id_evento):
-        """
-        Crea una nueva simulación exactamente como estaba en el
-        evento con ID = id_evento.
-        """
         return self.timeline.create_new_timeline(id_evento)
 
     def to_dict(self):
