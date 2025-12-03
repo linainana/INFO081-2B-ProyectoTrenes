@@ -23,5 +23,6 @@ class Via:
       self.trenes_actuales.remove(tren)
 
   def descripcion_via(self):
-    return f"Vía {self.ed_via} en {self.estacion.nombre} - Ocupacion {len(self.trenes_actuales)}/{self.capacidad}"
+    return f"Vía {self.id_via} en {self.estacion.nombre} - "
+    f"Ocupacion {len(self.trenes_actuales)}/{self.capacidad}")
 
