@@ -10,13 +10,13 @@ class GestorEventos:
         self._contador = 0
         self.todos_los_eventos = []
 
-    def agregar_evento(self, evento: Event):
+    def agregar_evento(self, evento: Evento):
         self._contador += 1
         evento.id = self._contador  #asigna id único
         heapq.heappush(self._heap, (evento.instante, self._contador, evento))
         self.todos_los_eventos.append(evento)   #lo guarda en historial
 
-    def obtener_siguiente_evento(self) -> Event:
+    def obtener_siguiente_evento(self) -> Evento:
         if not self._heap:
             return None
         _, _, evento = heapq.heappop(self._heap)
