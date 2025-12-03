@@ -13,7 +13,7 @@ class GestorEventos:
     def agregar_evento(self, evento: Event):
         self._contador += 1
         evento.id = self._contador  #asigna id único
-        heapq.heappush(self._heap, (evento.timestamp, self._contador, evento))
+        heapq.heappush(self._heap, (evento.instante, self._contador, evento))
         self.todos_los_eventos.append(evento)   #lo guarda en historial
 
     def obtener_siguiente_evento(self) -> Event:
@@ -29,7 +29,7 @@ class GestorEventos:
         return len(self._heap) == 0
 
     def listar_eventos(self):   #eventos ordenados cronológicamente
-        return sorted(self.todos_los_eventos, key=lambda e: e.timestamp)
+        return sorted(self.todos_los_eventos, key=lambda e: e.instante)
 
     def reemplazar_eventos_futuros(self, id_evento_corte: int, nuevos_eventos: List[Event]):
         eventos_confirmados = [
@@ -43,4 +43,4 @@ class GestorEventos:
         for evento in self.listar_eventos(): 
             self._contador += 1
             evento.id = self._contador
-            heapq.heappush(self._heap, (evento.timestamp, evento.id, evento))
+            heapq.heappush(self._heap, (evento.instante, evento.id, evento))
