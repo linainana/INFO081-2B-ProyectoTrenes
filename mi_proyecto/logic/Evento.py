@@ -18,12 +18,17 @@ class Evento:
     @staticmethod
     def desde_diccionario(data: dict):
         instante = datetime.fromisoformat(data["instante"])
-        evento = Evento(instante, data["tipo"], data["datos"], id_evento=data.get("id", None))
+        evento = Evento(
+            instante, 
+            data["tipo"], 
+            data["datos"], 
+            id_evento=data.get("id_evento", None)
+        )
         return evento
 
     def __repr__(self):
         return (
-            f"Evento(id={self.id}, "
+            f"Evento(id_evento={self.id_evento}, "
             f"instante='{self.instante}', "
             f"tipo='{self.tipo}', "
             f"datos={self.datos})"
