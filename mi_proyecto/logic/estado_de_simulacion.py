@@ -1,12 +1,10 @@
 from datetime import datetime, timedelta
-from logic.evento import Evento
-from logic.gestor_eventos import GestorEventos
-from logic.LíneaTemporal import LíneaTiempo
+from logic.Evento import Evento 
+from logic.GestorEventos import GestorEventos
 from models.trenes import Tren
 from models.estaciones import Estacion
 from models.rutas import Ruta
 from models.via import Via
-
 
 class EstadoSimulacion:
      
@@ -18,16 +16,16 @@ class EstadoSimulacion:
         self.vias = []
         self.gestor_eventos = GestorEventos()
         self.eventos_confirmados = []
-        self.línea_tiempo = LíneaTiempo(self)
 
     def estado_inicial_simulacion(self):
+        # 1. Crear Estaciones
         e1 = Estacion(1, "Estación Central", "RM", 8242459)
         e2 = Estacion(2, "Rancagua", "O’Higgins", 274407)
         e3 = Estacion(3, "Talca", "Maule", 242344)
         e4 = Estacion(4, "Chillán", "Ñuble", 204091)
 
         self.estaciones = [e1, e2, e3, e4]
-         
+     
         e1.agregar_via(capacidad=1)
         e2.agregar_via(capacidad=1)
         e3.agregar_via(capacidad=1)
@@ -50,11 +48,14 @@ class EstadoSimulacion:
         ]
          
         for tren in self.trenes:
-            estacion_inicial = tren.posicion
+            estacion_inicial = tren.posicion # Esto es un objeto Estacion
             if estacion_inicial and estacion_inicial.vias:
                 via = estacion_inicial.vias[0]
                 via.tren_ingresa(tren)
-                     
+                
+                tiempo_salida = self.hora_actual + timedelta(minutes=5)
+                self.programar_evento(tiempo_salida, "movimiento_tren", {"tren": tren})
+
         conexiones = {
             "Estación Central": ["Rancagua"],
             "Rancagua": ["Talca", "Estación Central"],
@@ -64,12 +65,14 @@ class EstadoSimulacion:
 
         for estacion in self.estaciones:
             if estacion.nombre in conexiones:
-                for destino in conexiones[estacion.nombre]:
-                    estacion.agregar_conexion(destino)
+                for destino_nom in conexiones[estacion.nombre]:
+                    # Buscamos el objeto destino en la lista self.estaciones
+                    dest_obj = next((e for e in self.estaciones if e.nombre == destino_nom), None)
+                    if dest_obj:
+                        estacion.agregar_conexion(dest_obj)
 
     def programar_evento(self, instante, tipo, datos):
-        """Correcto: crear evento directamente sin método inexistente."""
-        evento = Evento(instante, tipo, datos)
+        evento = self.gestor_eventos.crear_evento(instante, tipo, datos)
         self.gestor_eventos.agregar_evento(evento)
         return evento
 
@@ -77,45 +80,34 @@ class EstadoSimulacion:
         evento = self.gestor_eventos.obtener_siguiente_evento()
 
         if evento is None:
-            print("No hay más eventos")
-            return None
+            return None # Señal para la GUI de que terminó
 
         self.hora_actual = evento.instante
         self.eventos_confirmados.append(evento)
          
         if evento.tipo == "movimiento_tren":
-            self._procesar_movimiento_tren(evento)
-        return evento
+            return self._procesar_movimiento_tren(evento)
+
+        return f"Evento: {evento.tipo}"
 
     def _procesar_movimiento_tren(self, evento):
         tren = evento.datos["tren"]
         estacion_anterior = tren.posicion
+        
         estacion_nueva = tren.avanzar()
 
         if estacion_nueva:
-            print(f"{tren.nombre} avanzó de {estacion_anterior.nombre} a {estacion_nueva.nombre}")
+            tiempo_viaje = 30 # Minutos simulados
+            proximo_instante = self.hora_actual + timedelta(minutes=tiempo_viaje)
+            self.programar_evento(proximo_instante, "movimiento_tren", {"tren": tren})
+            
+            return f"[{self.hora_actual.strftime('%H:%M')}] {tren.nombre} llegó a {estacion_nueva.nombre}"
         else:
-            print(f"{tren.nombre} llegó al final de su ruta")
+            return f"[{self.hora_actual.strftime('%H:%M')}] {tren.nombre} terminó su recorrido."
 
     def crear_linea_temporal(self, id_evento):
-        return self.timeline.create_new_timeline(id_evento)
-
+        pass
+    
     def to_dict(self):
-        return {
-            "hora_actual": self.hora_actual.isoformat(),
-            "eventos_confirmados": [e.convertir_a_diccionario() for e in self.eventos_confirmados],
-            "eventos_futuros": [ev.convertir_a_diccionario() for ev in self.gestor_eventos.todos_los_eventos],
-        }
-    @staticmethod
-    def from_dict(data):
-        estado = EstadoSimulacion()
-        estado.hora_actual = datetime.fromisoformat(data["hora_actual"])
-        for ev_data in data["eventos_futuros"]:
-            ev = Evento.desde_diccionario(ev_data)
-            estado.gestor_eventos.agregar_evento(ev)
-
-        for ev_data in data["eventos_confirmados"]:
-            ev = Evento.desde_diccionario(ev_data)
-            estado.eventos_confirmados.append(ev)
-        return estado
+        return {"hora": self.hora_actual.isoformat()}
 
