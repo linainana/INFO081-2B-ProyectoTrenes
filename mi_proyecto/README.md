@@ -4,7 +4,7 @@ Este tendrá acceso a agregar, eliminar, editar y modificar el estado de los tre
 y rutas, también tomar decisiones de manera rápida con el fin de controlar el flujo de
 pasajeros en los horarios disponibles
 
-2. Integrantes: Josefa Farías(aka jopcat1), Isidora Llanquimán(aka Hyro404), Francisca Muñoz(aka fm437352), Catalina Provoste(linainana), Escarlett Vargas(aka nissydva).
+2. Integrantes: Josefa Farías(aka jopcat1), Isidora Llanquimán(aka Hyro404), Francisca Muñoz(aka fm437352), Catalina Provoste(aka linainana), Escarlett Vargas(aka nissydva).
 
 3. Indicadores en la interfaz:
 
