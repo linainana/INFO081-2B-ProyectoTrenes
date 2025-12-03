@@ -7,14 +7,17 @@ class GestorEventos:
 
     def __init__(self):
         self._heap = []
-        self._contador = 0
+        self._contador = 0 
         self.todos_los_eventos = []
 
-    def agregar_evento(self, evento: Evento):
+    def crear_evento(self, instante, tipo, datos) -> Evento:
+        evento = Evento(instante, tipo, datos, id_evento=self._contador)
         self._contador += 1
-        evento.id = self._contador  #asigna id único
-        heapq.heappush(self._heap, (evento.instante, self._contador, evento))
-        self.todos_los_eventos.append(evento)   #lo guarda en historial
+        return evento
+
+    def agregar_evento(self, evento: Evento):
+        heapq.heappush(self._heap, (evento.instante, evento.id, evento))
+        self.todos_los_eventos.append(evento)
 
     def obtener_siguiente_evento(self) -> Evento:
         if not self._heap:
@@ -28,19 +31,17 @@ class GestorEventos:
     def sin_evento(self):
         return len(self._heap) == 0
 
-    def listar_eventos(self):   #eventos ordenados cronológicamente
+    def listar_eventos(self):
         return sorted(self.todos_los_eventos, key=lambda e: e.instante)
 
     def reemplazar_eventos_futuros(self, id_evento_corte: int, nuevos_eventos: List[Evento]):
         eventos_confirmados = [
-            e for e in self.todos_los_eventos
-            if e.id and e.id <= id_evento_corte
+            e for e in self.todos_los_eventos if e.id <= id_evento_corte
         ]
 
         self.todos_los_eventos = eventos_confirmados + nuevos_eventos
+
         self._heap = []
-        self._contador = 0
-        for evento in self.listar_eventos(): 
-            self._contador += 1
-            evento.id = self._contador
-            heapq.heappush(self._heap, (evento.instante, evento.id, evento))
+        for e in self.listar_eventos():
+            heapq.heappush(self._heap, (e.instante, e.id, e))
+
